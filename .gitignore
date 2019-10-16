@@ -1,0 +1,17 @@
+target/
+build/
+.asscache
+.project
+.settings
+.bin/
+.idea/
+.tmp/
+.gradle
+*.class
+*.iml
+*.iws
+*.ipr
+*.db
+.DS_Store
+.classpath
+bin
