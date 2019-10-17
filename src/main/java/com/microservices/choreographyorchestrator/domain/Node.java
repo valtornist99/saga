@@ -13,5 +13,5 @@ import org.neo4j.ogm.annotation.NodeEntity;
 public class Node {
     private Long sagaInstanceId;
     private String sagaName;
-    private MetaNode metaNode;
+    private Long metaNodeId;
 }
