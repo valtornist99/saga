@@ -16,6 +16,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
+	compile group: 'com.voodoodyne.jackson.jsog', name: 'jackson-jsog', version: '1.1'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
