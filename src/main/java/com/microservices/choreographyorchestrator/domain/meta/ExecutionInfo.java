@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ExecutionInfo {
-    String channelName;
-    String eventType;
+    private String channelName;
+    private String eventType;
 }
