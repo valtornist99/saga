@@ -1,8 +1,10 @@
 package com.microservices.choreographyorchestrator.domain.meta;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class RetryInfo {
     private int timeout;
     private String timeUnit;

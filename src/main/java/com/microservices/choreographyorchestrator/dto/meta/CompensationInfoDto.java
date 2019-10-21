@@ -1,10 +1,10 @@
 package com.microservices.choreographyorchestrator.dto.meta;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class CompensationInfoDto {
-    @JsonProperty(value = "kafka_compensation")
-    private KafkaCompensationInfoDto kafkaCompensationInfoDto;
+    private KafkaCompensationInfoDto kafkaCompensationInfo;
 }

@@ -22,7 +22,7 @@ public class DtoToDataUtil {
 
     private static CompensationInfo getCompensationInfo(CompensationInfoDto compensationInfoDto) {
         CompensationInfo compensationInfo = new CompensationInfo();
-        String topicName = compensationInfoDto.getKafkaCompensationInfoDto().getTopicName();
+        String topicName = compensationInfoDto.getKafkaCompensationInfo().getTopicName();
         compensationInfo.setKafkaCompensation(new KafkaCompensation(topicName));
         return compensationInfo;
     }
@@ -31,7 +31,7 @@ public class DtoToDataUtil {
         RetryInfo retryInfo = new RetryInfo();
         retryInfo.setTimeout(retryInfoDto.getTimeout());
         retryInfo.setAttempts(retryInfoDto.getAttempts());
-        retryInfo.setTimeUnit(retryInfoDto.getTimeunit());
+        retryInfo.setTimeUnit(retryInfoDto.getTimeUnit());
         String topicName = retryInfo.getKafkaRetry().getTopicName();
         retryInfo.setKafkaRetry(new KafkaRetry(topicName));
         return retryInfo;
