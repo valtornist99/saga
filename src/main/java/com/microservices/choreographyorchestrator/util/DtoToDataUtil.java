@@ -1,6 +1,6 @@
 package com.microservices.choreographyorchestrator.util;
 
-import com.microservices.choreographyorchestrator.domain.MetaNode;
+import com.microservices.choreographyorchestrator.domain.SagaStepDefinition;
 import com.microservices.choreographyorchestrator.domain.meta.*;
 import com.microservices.choreographyorchestrator.dto.MetaInformationDto;
 import com.microservices.choreographyorchestrator.dto.meta.CompensationInfoDto;
@@ -9,15 +9,15 @@ import com.microservices.choreographyorchestrator.dto.meta.RetryInfoDto;
 import com.microservices.choreographyorchestrator.dto.meta.SuccessExecutionInfoDto;
 
 public class DtoToDataUtil {
-    public static MetaNode toMetaNode(MetaInformationDto metaInformationDto) {
-        MetaNode metaNode = new MetaNode();
-        metaNode.setSagaName(metaInformationDto.getSagaName());
-        metaNode.setStepName(metaInformationDto.getStepName());
-        metaNode.setCompensationInfo(getCompensationInfo(metaInformationDto.getCompensationInfo()));
-        metaNode.setRetryInfo(getRetryInfo(metaInformationDto.getRetryInfo()));
-        metaNode.setSuccessExecutionInfo(getExecutionInfo(metaInformationDto.getSuccessExecutionInfo()));
-        metaNode.setFailExecutionInfo(getExecutionInfo(metaInformationDto.getFailExecutionInfo()));
-        return metaNode;
+    public static SagaStepDefinition toMetaNode(MetaInformationDto metaInformationDto) {
+        SagaStepDefinition sagaStepDefinition = new SagaStepDefinition();
+        sagaStepDefinition.setSagaName(metaInformationDto.getSagaName());
+        sagaStepDefinition.setStepName(metaInformationDto.getStepName());
+        sagaStepDefinition.setCompensationInfo(getCompensationInfo(metaInformationDto.getCompensationInfo()));
+        sagaStepDefinition.setRetryInfo(getRetryInfo(metaInformationDto.getRetryInfo()));
+        sagaStepDefinition.setSuccessExecutionInfo(getExecutionInfo(metaInformationDto.getSuccessExecutionInfo()));
+        sagaStepDefinition.setFailExecutionInfo(getExecutionInfo(metaInformationDto.getFailExecutionInfo()));
+        return sagaStepDefinition;
     }
 
     private static CompensationInfo getCompensationInfo(CompensationInfoDto compensationInfoDto) {

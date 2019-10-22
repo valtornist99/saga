@@ -12,7 +12,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 @NodeEntity
 @Getter
 @Setter
-public class MetaNode {
+public class SagaStepDefinition {
     @Id
     @GeneratedValue
     private Long id;
