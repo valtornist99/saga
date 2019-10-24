@@ -1,22 +1,17 @@
 package com.microservices.choreographyorchestrator.util;
 
-import com.microservices.choreographyorchestrator.domain.SagaStepDefinition;
-import com.microservices.choreographyorchestrator.domain.meta.*;
-import com.microservices.choreographyorchestrator.dto.MetaInformationDto;
-import com.microservices.choreographyorchestrator.dto.meta.CompensationInfoDto;
-import com.microservices.choreographyorchestrator.dto.meta.FailExecutionInfoDto;
-import com.microservices.choreographyorchestrator.dto.meta.RetryInfoDto;
-import com.microservices.choreographyorchestrator.dto.meta.SuccessExecutionInfoDto;
+import com.microservices.choreographyorchestrator.domain.definition.*;
+import com.microservices.choreographyorchestrator.dto.definition.*;
 
 public class DtoToDataUtil {
-    public static SagaStepDefinition toMetaNode(MetaInformationDto metaInformationDto) {
+    public static SagaStepDefinition toMetaNode(SagaStepDefinitionDto sagaStepDefinitionDto) {
         SagaStepDefinition sagaStepDefinition = new SagaStepDefinition();
-        sagaStepDefinition.setSagaName(metaInformationDto.getSagaName());
-        sagaStepDefinition.setStepName(metaInformationDto.getStepName());
-        sagaStepDefinition.setCompensationInfo(getCompensationInfo(metaInformationDto.getCompensationInfo()));
-        sagaStepDefinition.setRetryInfo(getRetryInfo(metaInformationDto.getRetryInfo()));
-        sagaStepDefinition.setSuccessExecutionInfo(getExecutionInfo(metaInformationDto.getSuccessExecutionInfo()));
-        sagaStepDefinition.setFailExecutionInfo(getExecutionInfo(metaInformationDto.getFailExecutionInfo()));
+        sagaStepDefinition.setSagaName(sagaStepDefinitionDto.getSagaName());
+        sagaStepDefinition.setStepName(sagaStepDefinitionDto.getStepName());
+        sagaStepDefinition.setCompensationInfo(getCompensationInfo(sagaStepDefinitionDto.getCompensationInfo()));
+        sagaStepDefinition.setRetryInfo(getRetryInfo(sagaStepDefinitionDto.getRetryInfo()));
+        sagaStepDefinition.setSuccessExecutionInfo(getExecutionInfo(sagaStepDefinitionDto.getSuccessExecutionInfo()));
+        sagaStepDefinition.setFailExecutionInfo(getExecutionInfo(sagaStepDefinitionDto.getFailExecutionInfo()));
         return sagaStepDefinition;
     }
 

@@ -1,8 +1,5 @@
-package com.microservices.choreographyorchestrator.domain;
+package com.microservices.choreographyorchestrator.domain.definition;
 
-import com.microservices.choreographyorchestrator.domain.meta.CompensationInfo;
-import com.microservices.choreographyorchestrator.domain.meta.ExecutionInfo;
-import com.microservices.choreographyorchestrator.domain.meta.RetryInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.neo4j.ogm.annotation.GeneratedValue;

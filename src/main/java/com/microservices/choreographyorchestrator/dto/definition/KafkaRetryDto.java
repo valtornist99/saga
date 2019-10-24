@@ -1,4 +1,4 @@
-package com.microservices.choreographyorchestrator.dto.meta;
+package com.microservices.choreographyorchestrator.dto.definition;
 
 import lombok.Getter;
 import lombok.Setter;

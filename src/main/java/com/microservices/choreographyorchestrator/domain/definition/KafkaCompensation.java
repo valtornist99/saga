@@ -1,4 +1,4 @@
-package com.microservices.choreographyorchestrator.domain.meta;
+package com.microservices.choreographyorchestrator.domain.definition;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
