@@ -11,10 +11,16 @@ import lombok.Setter;
 @Setter
 public class MetaInformationDto {
     private String sagaName;
+
     private String stepName;
+
     private String previousStep;
+
     private SuccessExecutionInfoDto successExecutionInfo;
+
     private FailExecutionInfoDto failExecutionInfo;
+
     private CompensationInfoDto compensationInfo;
+
     private RetryInfoDto retryInfo;
 }

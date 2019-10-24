@@ -16,11 +16,17 @@ public class SagaStepDefinition {
     @Id
     @GeneratedValue
     private Long id;
+
     private String sagaName;
+
     private String stepName;
+
     private ExecutionInfo successExecutionInfo;
+
     private ExecutionInfo failExecutionInfo;
+
     private CompensationInfo compensationInfo;
+
     private RetryInfo retryInfo;
 }
 

@@ -7,7 +7,10 @@ import lombok.Setter;
 @Setter
 public class RetryInfo {
     private int timeout;
+
     private String timeUnit;
+
     private int attempts;
+
     private KafkaRetry kafkaRetry;
 }

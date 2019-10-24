@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class ExecutionInfo {
     private String channelName;
+
     private String eventType;
 }

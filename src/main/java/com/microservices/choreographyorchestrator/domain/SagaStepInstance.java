@@ -9,6 +9,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 @Setter
 public class SagaStepInstance {
     private Long sagaInstanceId;
+
     private String sagaName;
+
     private Long metaNodeId;
 }

@@ -9,7 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EventDto {
     private Long eventId;
+
     private Long sagaInstanceId;
+
     private String eventName;
+
     private String sagaName;
 }

@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class FailExecutionInfoDto {
     private String channelName;
+
     private String eventType;
 }
