@@ -10,8 +10,8 @@ public class DtoToDataUtil {
         sagaStepDefinition.setStepName(sagaStepDefinitionDto.getStepName());
         sagaStepDefinition.setCompensationInfo(getCompensationInfo(sagaStepDefinitionDto.getCompensationInfo()));
         sagaStepDefinition.setRetryInfo(getRetryInfo(sagaStepDefinitionDto.getRetryInfo()));
-        sagaStepDefinition.setSuccessExecutionInfo(getExecutionInfo(sagaStepDefinitionDto.getSuccessExecutionInfo()));
-        sagaStepDefinition.setFailExecutionInfo(getExecutionInfo(sagaStepDefinitionDto.getFailExecutionInfo()));
+        sagaStepDefinition.setSuccessExecutionInfo(getSuccessExecutionInfo(sagaStepDefinitionDto.getSuccessExecutionInfo()));
+        sagaStepDefinition.setFailExecutionInfo(getFailExecutionInfo(sagaStepDefinitionDto.getFailExecutionInfo()));
         return sagaStepDefinition;
     }
 
@@ -32,17 +32,21 @@ public class DtoToDataUtil {
         return retryInfo;
     }
 
-    private static ExecutionInfo getExecutionInfo(SuccessExecutionInfoDto executionInfoDto) {
-        ExecutionInfo executionInfo = new ExecutionInfo();
-        executionInfo.setChannelName(executionInfoDto.getChannelName());
-        executionInfo.setEventType(executionInfoDto.getEventType());
-        return executionInfo;
+    private static SuccessExecutionInfo getSuccessExecutionInfo(SuccessExecutionInfoDto successExecutionInfoDto) {
+        SuccessExecutionInfo successExecutionInfo = new SuccessExecutionInfo();
+        KafkaSuccessExecutionInfo kafkaSuccessExecutionInfo = new KafkaSuccessExecutionInfo();
+        kafkaSuccessExecutionInfo.setChannelName(successExecutionInfoDto.getKafkaSuccessExecutionInfoDto().getChannelName());
+        kafkaSuccessExecutionInfo.setEventType(successExecutionInfoDto.getKafkaSuccessExecutionInfoDto().getEventType());
+        successExecutionInfo.setKafkaSuccessExecutionInfo(kafkaSuccessExecutionInfo);
+        return successExecutionInfo;
     }
 
-    private static ExecutionInfo getExecutionInfo(FailExecutionInfoDto executionInfoDto) {
-        ExecutionInfo executionInfo = new ExecutionInfo();
-        executionInfo.setChannelName(executionInfoDto.getChannelName());
-        executionInfo.setEventType(executionInfoDto.getEventType());
-        return executionInfo;
+    private static FailExecutionInfo getFailExecutionInfo(FailExecutionInfoDto failExecutionInfoDto) {
+        FailExecutionInfo failExecutionInfo = new FailExecutionInfo();
+        KafkaFailExecutionInfo kafkaFailExecutionInfo = new KafkaFailExecutionInfo();
+        kafkaFailExecutionInfo.setChannelName(failExecutionInfoDto.getKafkaFailExecutionInfoDto().getChannelName());
+        kafkaFailExecutionInfo.setEventType(failExecutionInfoDto.getKafkaFailExecutionInfoDto().getEventType());
+        failExecutionInfo.setKafkaFailExecutionInfo(kafkaFailExecutionInfo);
+        return failExecutionInfo;
     }
 }

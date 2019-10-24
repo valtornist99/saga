@@ -18,9 +18,9 @@ public class SagaStepDefinition {
 
     private String stepName;
 
-    private ExecutionInfo successExecutionInfo;
+    private SuccessExecutionInfo successExecutionInfo;
 
-    private ExecutionInfo failExecutionInfo;
+    private FailExecutionInfo failExecutionInfo;
 
     private CompensationInfo compensationInfo;
 

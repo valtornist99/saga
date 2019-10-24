@@ -5,8 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ExecutionInfo {
-    private String channelName;
-
-    private String eventType;
+public class FailExecutionInfo {
+    KafkaFailExecutionInfo kafkaFailExecutionInfo;
 }

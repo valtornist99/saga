@@ -5,6 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SuccessExecutionInfoDto {
-    KafkaSuccessExecutionInfoDto kafkaSuccessExecutionInfoDto;
+public class KafkaFailExecutionInfoDto {
+    private String channelName;
+
+    private String eventType;
 }
