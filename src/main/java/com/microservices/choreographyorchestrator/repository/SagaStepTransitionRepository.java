@@ -7,9 +7,9 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import java.util.List;
 
 public interface SagaStepTransitionRepository extends Neo4jRepository<SagaStepTransitionEvent, Long> {
-    List<SagaStepTransitionEvent> findMetaNodeRelationByPreviousStep(SagaStepDefinition previousStep);
+    List<SagaStepTransitionEvent> findSagaStepTransitionEventsByPreviousStep(SagaStepDefinition previousStep);
 
-    List<SagaStepTransitionEvent> findMetaNodeRelationByNextStep(SagaStepDefinition nextStep);
+    List<SagaStepTransitionEvent> findSagaStepTransitionEventsByNextStep(SagaStepDefinition nextStep);
 
-    List<SagaStepTransitionEvent> findMetaNodeRelationByPreviousStepAndNextStep(SagaStepDefinition previousStep, SagaStepDefinition nextStep);
+    List<SagaStepTransitionEvent> findSagaStepTransitionEventsByPreviousStepAndNextStep(SagaStepDefinition previousStep, SagaStepDefinition nextStep);
 }
