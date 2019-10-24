@@ -12,5 +12,5 @@ public class SagaStepInstance {
 
     private String sagaName;
 
-    private Long metaNodeId;
+    private Long sagaStepDefinitionId;
 }

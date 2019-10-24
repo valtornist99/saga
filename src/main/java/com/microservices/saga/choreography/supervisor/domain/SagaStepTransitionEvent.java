@@ -21,5 +21,5 @@ public class SagaStepTransitionEvent {
     @EndNode
     private SagaStepDefinition nextStep;
 
-    private Long creationDate;
+    private Long creationTime;
 }
