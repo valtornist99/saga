@@ -6,11 +6,11 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import java.util.List;
 
 public interface SagaStepDefinitionTransitionEventRepository extends Neo4jRepository<SagaStepDefinitionTransitionEvent, Long> {
-    SagaStepDefinitionTransitionEvent findSagaStepDefinitionBySagaNameAndEventName(String sagaName, String eventName);
+    SagaStepDefinitionTransitionEvent findSagaStepDefinitionTransitionEventBySagaNameAndEventName(String sagaName, String eventName);
 
-    SagaStepDefinitionTransitionEvent findSagaStepDefinitionByEventId(Long eventId);
+    SagaStepDefinitionTransitionEvent findSagaStepDefinitionTransitionEventByEventId(Long eventId);
 
-    List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionsByEventName(String eventName);
+    List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsByEventName(String eventName);
 
-    List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionsBySagaName(String sagaName);
+    List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsBySagaName(String sagaName);
 }

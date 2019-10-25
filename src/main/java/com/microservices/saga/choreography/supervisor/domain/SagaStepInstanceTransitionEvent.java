@@ -12,6 +12,8 @@ public class SagaStepInstanceTransitionEvent {
     @GeneratedValue
     private Long eventId;
 
+    private String sagaName;
+
     private String eventName;
 
     @StartNode
