@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface SagaStepInstanceRepository extends Neo4jRepository<SagaStepInstance, Long> {
     /**
+     * Function to get the node of the saga instance graph by the saga instance id and the name of the step
+     *
      * @param sagaInstanceId - the id of the saga instance
      * @param stepName       - the name of the step
      * @return node of the saga instance graph
@@ -17,6 +19,8 @@ public interface SagaStepInstanceRepository extends Neo4jRepository<SagaStepInst
     SagaStepInstance findSagaStepInstanceBySagaInstanceIdAndStepName(Long sagaInstanceId, String stepName);
 
     /**
+     * Function to get the node of the saga instance graph by the saga instance id and the id of the node in the template graph
+     *
      * @param sagaInstanceId       - the id of the saga instance
      * @param sagaStepDefinitionId - the id of the saga step definition
      * @return node of the saga instance graph
@@ -24,9 +28,10 @@ public interface SagaStepInstanceRepository extends Neo4jRepository<SagaStepInst
     SagaStepInstance findSagaStepInstanceBySagaInstanceIdAndSagaStepDefinitionId(Long sagaInstanceId, Long sagaStepDefinitionId);
 
     /**
+     * Function to get all nodes of saga instance graph by saga name and saga instance id
+     *
      * @param sagaInstanceId - the id of the saga instance
-     * @param sagaName       - the name of the saga
      * @return all nodes of the saga step instance graph
      */
-    List<SagaStepInstance> findSagaStepInstancesBySagaInstanceIdAndSagaName(Long sagaInstanceId, String sagaName);
+    List<SagaStepInstance> findSagaStepInstancesBySagaInstanceId(Long sagaInstanceId);
 }
