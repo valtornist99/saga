@@ -16,6 +16,8 @@ public class SagaStepInstanceTransitionEvent {
 
     private String eventName;
 
+    private Long sagaInstanceId;
+
     @StartNode
     private SagaStepInstance previousStep;
 
