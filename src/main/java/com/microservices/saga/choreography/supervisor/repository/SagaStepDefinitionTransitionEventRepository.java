@@ -7,11 +7,12 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import java.util.List;
 
 /**
- * The repository that stores relationships between the nodes of a template class
+ * Manages relationships between the nodes of a template graph
  */
 public interface SagaStepDefinitionTransitionEventRepository extends Neo4jRepository<SagaStepDefinitionTransitionEvent, Long> {
     /**
-     * Function that returns the relationship between the nodes of a template graph by the name of the saga and the name of the event
+     * Returns the event along with the nodes of the template graph connected by this event
+     * by event name for given saga
      *
      * @param sagaName  - the name of the saga
      * @param eventName - the name of the event
@@ -20,7 +21,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
     SagaStepDefinitionTransitionEvent findSagaStepDefinitionTransitionEventBySagaNameAndEventName(String sagaName, String eventName);
 
     /**
-     * Function to get all the relationships of the nodes in the template graph of a specific saga
+     * Retrieves all the event for given saga
      *
      * @param sagaName - the name of the saga
      * @return all relationships of the specific saga
@@ -28,7 +29,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
     List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsBySagaName(String sagaName);
 
     /**
-     * Function that returns a list of template graph relationships with the specified previous step
+     * Returns outgoing events for specified saga step
      *
      * @param sagaName     - the name of the saga
      * @param previousStep - node of the template graph
@@ -37,7 +38,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
     List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsBySagaNameAndPreviousStep(String sagaName, SagaStepDefinition previousStep);
 
     /**
-     * Function that returns a list of template graph relationships with the specified next step
+     * Returns incoming events for specified saga step
      *
      * @param sagaName - the name of the saga
      * @param nextStep - node of the template graph
