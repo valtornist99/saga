@@ -1,4 +1,4 @@
-package com.microservices.choreographyorchestrator;
+package com.microservices.saga.choreography.supervisor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

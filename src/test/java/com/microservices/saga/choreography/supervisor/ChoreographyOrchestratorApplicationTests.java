@@ -1,4 +1,4 @@
-package com.microservices.choreographyorchestrator;
+package com.microservices.saga.choreography.supervisor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
