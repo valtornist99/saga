@@ -1,6 +1,7 @@
 package com.microservices.saga.choreography.supervisor.repository;
 
 import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
+import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;
@@ -22,4 +23,18 @@ public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDe
      * @return all nodes of the saga
      */
     List<SagaStepDefinition> findSagaStepDefinitionsBySagaName(String sagaName);
+
+    /**
+     * Retrieves all the end nodes of the template graph of a specific saga
+     *
+     * @param sagaName - the name of the saga
+     * @return all end nodes of the saga
+     */
+    @Query("MATCH (anyPoint)" +
+            "WHERE anyPoint.sagaName={0}" +
+            "MATCH (anyPoint)-[]->(endNode)" +
+            "OPTIONAL MATCH (endNode)-[anyRelation]->()" +
+            "WHERE anyRelation is null" +
+            "RETURN endNode")
+    List<SagaStepDefinition> findEndNodesBySagaName(String sagaName);
 }
