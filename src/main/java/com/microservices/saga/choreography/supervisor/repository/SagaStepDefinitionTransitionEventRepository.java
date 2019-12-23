@@ -31,18 +31,16 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
     /**
      * Returns outgoing events for specified saga step
      *
-     * @param sagaName     - the name of the saga
      * @param previousStep - node of the template graph
      * @return list of template graph relationships with specified previousStep
      */
-    List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsBySagaNameAndPreviousStep(String sagaName, SagaStepDefinition previousStep);
+    List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsByPreviousStep(SagaStepDefinition previousStep);
 
     /**
      * Returns incoming events for specified saga step
      *
-     * @param sagaName - the name of the saga
      * @param nextStep - node of the template graph
      * @return list of template graph relationships with specified nextStep
      */
-    List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsBySagaNameAndNextStep(String sagaName, SagaStepDefinition nextStep);
+    List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsByNextStep(SagaStepDefinition nextStep);
 }

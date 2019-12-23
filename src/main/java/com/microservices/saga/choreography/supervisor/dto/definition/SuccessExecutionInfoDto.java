@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SuccessExecutionInfoDto {
-    KafkaSuccessExecutionInfoDto kafkaSuccessExecutionInfoDto;
+    KafkaSuccessExecutionInfoDto kafkaSuccessExecutionInfo;
 }

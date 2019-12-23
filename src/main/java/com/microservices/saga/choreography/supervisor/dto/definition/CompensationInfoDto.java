@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CompensationInfoDto {
-    private KafkaCompensationInfoDto kafkaCompensationInfo;
+    private KafkaCompensationInfoDto kafkaCompensation;
 }

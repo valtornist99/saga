@@ -31,7 +31,7 @@ public class DefinitionController {
     }
 
     @PutMapping(value = "/update/{id}", produces = "application/json")
-    public ResponseEntity<SagaStepDefinition> updateStepDefinition(@PathVariable Long id, @RequestBody @Valid SagaStepDefinitionDto stepDefinitionDto) {
+    public ResponseEntity<SagaStepDefinition> updateStepDefinition(@PathVariable Long id, @RequestBody @Valid SagaStepDefinitionDto stepDefinitionDto) throws Exception {
         return ResponseEntity.ok().body(definitionService.updateDefinition(id, stepDefinitionDto));
     }
 

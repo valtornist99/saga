@@ -28,6 +28,15 @@ public class SagaStepDefinition {
     private CompensationInfo compensationInfo;
 
     private RetryInfo retryInfo;
+
+    public void update(SagaStepDefinition stepDefinition) {
+        this.sagaName = stepDefinition.getSagaName();
+        this.stepName = stepDefinition.getStepName();
+        this.successExecutionInfo = stepDefinition.getSuccessExecutionInfo();
+        this.failExecutionInfo = stepDefinition.getFailExecutionInfo();
+        this.compensationInfo = stepDefinition.getCompensationInfo();
+        this.retryInfo = stepDefinition.getRetryInfo();
+    }
 }
 
 
