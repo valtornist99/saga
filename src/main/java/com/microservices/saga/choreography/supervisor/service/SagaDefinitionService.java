@@ -7,6 +7,7 @@ import com.microservices.saga.choreography.supervisor.dto.definition.SagaStepDef
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionRepository;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionTransitionEventRepository;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,8 @@ public class SagaDefinitionService {
 
     public SagaStepDefinition addDefinition(SagaStepDefinitionDto stepDefinitionDto) {
         SagaStepDefinition stepDefinition = mapper.map(stepDefinitionDto, SagaStepDefinition.class);
-        String previousStepName = stepDefinitionDto.getPreviousStep();
-        saveTransitionEvent(stepDefinition, previousStepName);
+        @NonNull List<String> previousSteps = stepDefinitionDto.getPreviousSteps();
+        saveTransitionEvent(stepDefinition, previousSteps);
         return stepDefinitionRepository.save(stepDefinition);
     }
 
@@ -56,16 +57,17 @@ public class SagaDefinitionService {
         return Stream.concat(previousTransitions.stream(), nextTransitions.stream()).collect(Collectors.toList());
     }
 
-    private void deleteTransitions(List<SagaStepDefinitionTransitionEvent> transitionEvents) {
+    private void deleteTransitions(@NonNull List<SagaStepDefinitionTransitionEvent> transitionEvents) {
         transitionEvents.forEach(transition -> transitionEventRepository.delete(transition));
     }
 
-    private void saveTransitionEvent(SagaStepDefinition stepDefinition, String previousStepName) {
-        if (previousStepName == null) return;
-        SagaStepDefinition previousStep = stepDefinitionRepository
-                .findSagaStepDefinitionBySagaNameAndStepName(stepDefinition.getSagaName(), previousStepName);
-        SagaStepDefinitionTransitionEvent definitionTransitionEvent = eventFactory
-                .createSageStepDefinitionTransitionEvent(stepDefinition, previousStep);
-        transitionEventRepository.save(definitionTransitionEvent);
+    private void saveTransitionEvent(SagaStepDefinition stepDefinition, List<String> previousSteps) {
+        for (String previousStep: previousSteps) {
+            SagaStepDefinition previousStepDefinition = stepDefinitionRepository
+                    .findSagaStepDefinitionBySagaNameAndStepName(stepDefinition.getSagaName(), previousStep);
+            SagaStepDefinitionTransitionEvent definitionTransitionEvent = eventFactory
+                    .createSageStepDefinitionTransitionEvent(stepDefinition, previousStepDefinition);
+            transitionEventRepository.save(definitionTransitionEvent);
+        }
     }
 }
