@@ -19,10 +19,10 @@ import java.util.stream.Stream;
 @Service
 @AllArgsConstructor
 public class SagaDefinitionService {
-    private SagaStepDefinitionRepository stepDefinitionRepository;
-    private SagaStepDefinitionTransitionEventRepository transitionEventRepository;
-    private SagaStepDefinitionTransitionEventFactory eventFactory;
-    private ModelMapper mapper;
+    private final SagaStepDefinitionRepository stepDefinitionRepository;
+    private final SagaStepDefinitionTransitionEventRepository transitionEventRepository;
+    private final SagaStepDefinitionTransitionEventFactory eventFactory;
+    private final ModelMapper mapper;
 
     public SagaStepDefinition addDefinition(SagaStepDefinitionDto stepDefinitionDto) {
         SagaStepDefinition stepDefinition = mapper.map(stepDefinitionDto, SagaStepDefinition.class);
@@ -34,7 +34,7 @@ public class SagaDefinitionService {
     public SagaStepDefinition updateDefinition(Long id, SagaStepDefinitionDto stepDefinitionDto) throws Exception {
         SagaStepDefinition newDefinition = mapper.map(stepDefinitionDto, SagaStepDefinition.class);
         Optional<SagaStepDefinition> foundOptionalDefinition = stepDefinitionRepository.findById(id);
-        if(foundOptionalDefinition.isEmpty()) throw new Exception("Definition with id " + id + " is not present");
+        if (foundOptionalDefinition.isEmpty()) throw new Exception("Definition with id " + id + " is not present");
         SagaStepDefinition foundDefinition = foundOptionalDefinition.get();
         foundDefinition.update(newDefinition);
         return stepDefinitionRepository.save(foundDefinition);
@@ -58,11 +58,11 @@ public class SagaDefinitionService {
     }
 
     private void deleteTransitions(@NonNull List<SagaStepDefinitionTransitionEvent> transitionEvents) {
-        transitionEvents.forEach(transition -> transitionEventRepository.delete(transition));
+        transitionEvents.forEach(transitionEventRepository::delete);
     }
 
     private void saveTransitionEvent(SagaStepDefinition stepDefinition, List<String> previousSteps) {
-        for (String previousStep: previousSteps) {
+        for (String previousStep : previousSteps) {
             SagaStepDefinition previousStepDefinition = stepDefinitionRepository
                     .findSagaStepDefinitionBySagaNameAndStepName(stepDefinition.getSagaName(), previousStep);
             SagaStepDefinitionTransitionEvent definitionTransitionEvent = eventFactory

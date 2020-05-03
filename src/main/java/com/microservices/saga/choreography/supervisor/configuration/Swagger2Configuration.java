@@ -10,6 +10,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * Swagger configuration
+ */
 @Configuration
 @EnableSwagger2
 public class Swagger2Configuration {
@@ -21,6 +24,7 @@ public class Swagger2Configuration {
                 .paths(PathSelectors.regex("/.*"))
                 .build().apiInfo(apiEndPointsInfo());
     }
+
     private ApiInfo apiEndPointsInfo() {
         return new ApiInfoBuilder().title("Saga choreography orchestrator API")
                 .version("1.0.0")
