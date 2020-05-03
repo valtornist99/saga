@@ -21,4 +21,6 @@ public class SagaStepInstance {
     private String stepName;
 
     private Long sagaStepDefinitionId;
+
+    private StepStatus stepStatus;
 }

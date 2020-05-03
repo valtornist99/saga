@@ -10,6 +10,8 @@ import org.neo4j.ogm.annotation.*;
 public class SagaStepInstanceTransitionEvent {
     @Id
     @GeneratedValue
+    private Long id;
+
     private Long eventId;
 
     private String sagaName;
