@@ -14,16 +14,27 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
      * Returns the event along with the nodes of the template graph connected by this event
      * by event name for given saga
      *
-     * @param sagaName  - the name of the saga
-     * @param eventName - the name of the event
+     * @param sagaName  the name of the saga
+     * @param eventName the name of the event
      * @return relationship between two nodes
      */
     SagaStepDefinitionTransitionEvent findSagaStepDefinitionTransitionEventBySagaNameAndEventName(String sagaName, String eventName);
 
     /**
+     * Returns the event along with the nodes of the template graph connected by this event
+     * by failed event name for given saga
+     *
+     * @param sagaName        the name of the saga
+     * @param failedEventName the name of the event
+     * @return relationship between two nodes
+     */
+    SagaStepDefinitionTransitionEvent findSagaStepDefinitionTransitionEventBySagaNameAndFailedEventName(String sagaName,
+                                                                                                        String failedEventName);
+
+    /**
      * Retrieves all the event for given saga
      *
-     * @param sagaName - the name of the saga
+     * @param sagaName the name of the saga
      * @return all relationships of the specific saga
      */
     List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsBySagaName(String sagaName);
@@ -31,7 +42,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
     /**
      * Returns outgoing events for specified saga step
      *
-     * @param previousStep - node of the template graph
+     * @param previousStep node of the template graph
      * @return list of template graph relationships with specified previousStep
      */
     List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsByPreviousStep(SagaStepDefinition previousStep);
@@ -39,7 +50,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
     /**
      * Returns incoming events for specified saga step
      *
-     * @param nextStep - node of the template graph
+     * @param nextStep node of the template graph
      * @return list of template graph relationships with specified nextStep
      */
     List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsByNextStep(SagaStepDefinition nextStep);

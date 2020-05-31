@@ -12,7 +12,7 @@ public class KafkaSuccessExecutionInfo {
     @GeneratedValue
     private Long id;
 
-    private String topicName;
+    private String topicPattern;
 
     private String eventType;
 }

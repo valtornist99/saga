@@ -12,5 +12,5 @@ public class SuccessExecutionInfo {
     @GeneratedValue
     private Long id;
 
-    KafkaSuccessExecutionInfo kafkaSuccessExecutionInfo;
+    private KafkaSuccessExecutionInfo kafkaSuccessExecutionInfo;
 }

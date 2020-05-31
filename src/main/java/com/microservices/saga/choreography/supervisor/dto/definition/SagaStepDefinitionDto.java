@@ -19,6 +19,4 @@ public class SagaStepDefinitionDto {
     private FailExecutionInfoDto failExecutionInfo;
 
     private CompensationInfoDto compensationInfo;
-
-    private RetryInfoDto retryInfo;
 }

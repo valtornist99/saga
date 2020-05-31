@@ -17,4 +17,6 @@ public class KafkaCompensation {
     private Long id;
 
     private String topicName;
+
+    private String eventType;
 }

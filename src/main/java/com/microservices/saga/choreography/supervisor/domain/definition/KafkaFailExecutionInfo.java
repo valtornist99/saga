@@ -12,7 +12,7 @@ public class KafkaFailExecutionInfo {
     @GeneratedValue
     private Long id;
 
-    private String topicName;
+    private String topicPattern;
 
     private String eventType;
 }

@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.domain.definition;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.neo4j.ogm.annotation.EndNode;
@@ -9,6 +10,7 @@ import org.neo4j.ogm.annotation.StartNode;
 
 @Getter
 @Setter
+@Builder(toBuilder = true)
 public class SagaStepDefinitionTransitionEvent {
     @Id
     @GeneratedValue
@@ -17,6 +19,8 @@ public class SagaStepDefinitionTransitionEvent {
     private String sagaName;
 
     private String eventName;
+
+    private String failedEventName;
 
     @StartNode
     private SagaStepDefinition previousStep;
