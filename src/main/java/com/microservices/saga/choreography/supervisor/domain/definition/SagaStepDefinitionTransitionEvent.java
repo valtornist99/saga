@@ -1,17 +1,23 @@
 package com.microservices.saga.choreography.supervisor.domain.definition;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.StartNode;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Builder(toBuilder = true)
-public class SagaStepDefinitionTransitionEvent {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SagaStepDefinitionTransitionEvent implements Serializable {
     @Id
     @GeneratedValue
     private Long eventId;

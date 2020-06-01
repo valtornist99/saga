@@ -1,7 +1,9 @@
 package com.microservices.saga.choreography.supervisor.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.GeneratedValue;
@@ -13,6 +15,8 @@ import org.neo4j.ogm.annotation.StartNode;
 @Setter
 @Builder(toBuilder = true)
 @RelationshipEntity(type = "EVENT")
+@AllArgsConstructor
+@NoArgsConstructor
 public class SagaStepInstanceTransitionEvent {
     @Id
     @GeneratedValue

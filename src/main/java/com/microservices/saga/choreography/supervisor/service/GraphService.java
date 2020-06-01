@@ -6,7 +6,6 @@ import com.microservices.saga.choreography.supervisor.domain.definition.KafkaCom
 import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
 import com.microservices.saga.choreography.supervisor.dto.definition.SagaStepDefinitionDto;
 import com.microservices.saga.choreography.supervisor.exception.StepDefinitionNotFoundException;
-import com.microservices.saga.choreography.supervisor.kafka.KafkaClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Headers;
@@ -17,7 +16,6 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,15 +30,9 @@ public class GraphService {
 
     private final DefinitionService definitionService;
     private final InstanceService instanceService;
-    private final KafkaClient kafkaClient;
 
     public SagaStepDefinition addDefinition(SagaStepDefinitionDto definitionDto) {
-        SagaStepDefinition stepDefinition = definitionService.addDefinition(definitionDto);
-        String successPattern = stepDefinition.getSuccessExecutionInfo().getKafkaSuccessExecutionInfo().getTopicPattern();
-        String failPattern = stepDefinition.getFailExecutionInfo().getKafkaFailExecutionInfo().getTopicPattern();
-        kafkaClient.subscribe(Pattern.compile(successPattern));
-        kafkaClient.subscribe(Pattern.compile(failPattern));
-        return stepDefinition;
+        return definitionService.addDefinition(definitionDto);
     }
 
     public SagaStepDefinition updateDefinition(Long definitionId, SagaStepDefinitionDto definitionDto) {
@@ -93,7 +85,7 @@ public class GraphService {
         Queue<SagaStepDefinition> visitedNodes = new PriorityQueue<>();
         Queue<SagaStepDefinition> unvisitedNodes = new PriorityQueue<>(endNodes);
 
-        while(!unvisitedNodes.isEmpty()) {
+        while (!unvisitedNodes.isEmpty()) {
             Queue<SagaStepDefinition> newNodes = unvisitedNodes
                     .stream()
                     .flatMap(node -> definitionService.getIncomingSteps(node).stream())

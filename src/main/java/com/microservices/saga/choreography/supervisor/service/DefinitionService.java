@@ -6,8 +6,8 @@ import com.microservices.saga.choreography.supervisor.dto.definition.SagaStepDef
 import com.microservices.saga.choreography.supervisor.exception.StepDefinitionNotFoundException;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionRepository;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionTransitionEventRepository;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  * Service that responsible for handling {@link SagaStepDefinition} and {@link SagaStepDefinitionTransitionEvent} info
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DefinitionService {
     /**
      * Step definition repo
@@ -88,6 +88,7 @@ public class DefinitionService {
 
     /**
      * Returns incoming steps
+     *
      * @param stepDefinition step to find incoming
      * @return list of incoming steps
      */

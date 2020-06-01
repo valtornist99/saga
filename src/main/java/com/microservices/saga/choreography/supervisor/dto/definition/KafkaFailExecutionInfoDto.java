@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class KafkaFailExecutionInfoDto {
-    private String topicPatter;
+    private String topicPattern;
 
     private String eventType;
 }

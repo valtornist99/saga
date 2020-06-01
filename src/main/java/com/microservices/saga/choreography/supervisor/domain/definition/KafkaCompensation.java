@@ -7,11 +7,13 @@ import lombok.Setter;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class KafkaCompensation {
+public class KafkaCompensation implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

@@ -1,13 +1,12 @@
 package com.microservices.saga.choreography.supervisor.kafka;
 
 import com.microservices.saga.choreography.supervisor.domain.Event;
+import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
 import com.microservices.saga.choreography.supervisor.exception.KafkaRuntimeException;
 import com.microservices.saga.choreography.supervisor.service.EventHandler;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.Headers;
@@ -15,12 +14,14 @@ import org.springframework.stereotype.Service;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Service that responsible for interacting with kafka
@@ -46,45 +47,42 @@ public class KafkaClient {
     private final EventHandler eventHandler;
 
     /**
-     * Kafka producer
-     */
-    private final KafkaProducer<String, String> producer;
-
-    /**
      * Kafka consumer
      */
     private final KafkaConsumer<String, String> consumer;
 
-    private final Set<Pattern> listeningPatterns;
+    private final Set<String> listeningTopics;
 
     public KafkaClient(EventHandler eventHandler,
-                       KafkaProducer<String, String> kafkaProducer,
                        KafkaConsumer<String, String> kafkaConsumer) {
-        this.listeningPatterns = new HashSet<>();
+        this.listeningTopics = new HashSet<>();
         this.isListeningClosed = new AtomicBoolean(true);
         this.eventHandler = eventHandler;
-        this.producer = kafkaProducer;
         this.consumer = kafkaConsumer;
-
-    }
-
-    public void sendMessage(String topicName, Headers headers, String message) {
-        producer.send(new ProducerRecord<>(topicName, message));
     }
 
     /**
      * Subscribe on topics to listen
      *
-     * @param topicNamePattern regex describing the naming rule for topics to subscribe to listen
+     * @param topicNames regex describing the naming rule for topics to subscribe to listen
      */
-    public void subscribe(Pattern topicNamePattern) {
-        if (!listeningPatterns.contains(topicNamePattern)) {
-            listeningPatterns.add(topicNamePattern);
-            consumer.subscribe(topicNamePattern);
+    public void subscribe(List<String> topicNames) {
+        List<String> newTopics = topicNames.stream()
+                .filter(topic -> !listeningTopics.contains(topic))
+                .collect(Collectors.toList());
+        if (!newTopics.isEmpty()) {
+            listeningTopics.addAll(newTopics);
+            consumer.subscribe(listeningTopics);
             if (isListeningClosed.get()) {
                 startListeningTopics();
             }
         }
+    }
+
+    public void subscribeOnStepDefinition(SagaStepDefinition stepDefinition) {
+        String successTopic = stepDefinition.getSuccessExecutionInfo().getKafkaSuccessExecutionInfo().getTopicPattern();
+        String failTopic = stepDefinition.getFailExecutionInfo().getKafkaFailExecutionInfo().getTopicPattern();
+        subscribe(Arrays.asList(successTopic, failTopic));
     }
 
     private void startListeningTopics() {
