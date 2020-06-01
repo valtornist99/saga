@@ -30,11 +30,8 @@ public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDe
      * @param sagaName - the name of the saga
      * @return all end nodes of the saga
      */
-    @Query("MATCH (anyPoint)" +
-            "WHERE anyPoint.sagaName={0}" +
-            "MATCH (anyPoint)-[]->(endNode)" +
-            "OPTIONAL MATCH (endNode)-[anyRelation]->()" +
-            "WHERE anyRelation is null" +
-            "RETURN endNode")
+    @Query("MATCH (step:SagaStepDefinition{sagaName: {0}}) " +
+            "WHERE NOT ()-[:PREVIOUS_STEP]->(step) " +
+            "RETURN step")
     List<SagaStepDefinition> findEndNodesBySagaName(String sagaName);
 }
