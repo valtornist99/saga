@@ -27,7 +27,7 @@ public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDe
     List<SagaStepDefinition> findSagaStepDefinitionsBySagaName(String sagaName);
 
     /**
-     * Retrieves all the end nodes of the template graph of a specific saga
+     * Retrieves end nodes without relations of the template graph of a specific saga
      *
      * @param sagaName - the name of the saga
      * @return all end nodes of the saga
@@ -35,10 +35,16 @@ public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDe
     @Query("MATCH (step:SagaStepDefinition{sagaName: $sagaName}) " +
             "WHERE NOT ()-[:PREVIOUS_STEP]->(step) " +
             "RETURN step")
-    List<SagaStepDefinition> findEndNodesIdBySagasName(String sagaName);
+    List<SagaStepDefinition> findOnlyEndNodeForSaga(String sagaName);
 
+    /**
+     * Retrieves all the end nodes of the template graph of a specific saga
+     *
+     * @param sagaName - the name of the saga
+     * @return all end nodes of the saga
+     */
     default List<SagaStepDefinition> findEndNodesBySagaName(String sagaName) {
-        return findEndNodesIdBySagasName(sagaName).stream()
+        return findOnlyEndNodeForSaga(sagaName).stream()
                 .map(SagaStepDefinition::getId)
                 .map(id -> findById(id).orElseThrow(IllegalArgumentException::new))
                 .collect(toList());
