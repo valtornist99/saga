@@ -6,6 +6,8 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDefinition, Long> {
     /**
      * Retrieves the node of the template graph by the name of the saga and the name of the event
@@ -33,5 +35,12 @@ public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDe
     @Query("MATCH (step:SagaStepDefinition{sagaName: {0}}) " +
             "WHERE NOT ()-[:PREVIOUS_STEP]->(step) " +
             "RETURN step")
-    List<SagaStepDefinition> findEndNodesBySagaName(String sagaName);
+    List<SagaStepDefinition> findEndNodesIdBySagasName(String sagaName);
+
+    default List<SagaStepDefinition> findEndNodesBySagaName(String sagaName) {
+        return findEndNodesIdBySagasName(sagaName).stream()
+                .map(SagaStepDefinition::getId)
+                .map(id -> findById(id).orElseThrow(IllegalArgumentException::new))
+                .collect(toList());
+    }
 }
