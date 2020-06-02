@@ -34,4 +34,12 @@ public interface SagaStepInstanceRepository extends Neo4jRepository<SagaStepInst
      * @return all nodes of the saga step instance graph
      */
     List<SagaStepInstance> findSagaStepInstancesBySagaInstanceId(Long sagaInstanceId);
+
+    /**
+     * Returns all the nodes of saga graph by saga name
+     *
+     * @param sagaName - the name of the saga
+     * @return all nodes of the saga
+     */
+    List<SagaStepInstance> findSagaStepInstanceBySagaName(String sagaName);
 }
