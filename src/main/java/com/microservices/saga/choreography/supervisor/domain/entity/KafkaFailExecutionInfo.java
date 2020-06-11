@@ -1,4 +1,4 @@
-package com.microservices.saga.choreography.supervisor.domain.definition;
+package com.microservices.saga.choreography.supervisor.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,10 +13,12 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompensationInfo implements Serializable {
+public class KafkaFailExecutionInfo implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    private KafkaCompensation kafkaCompensation;
+    private String topicPattern;
+
+    private String eventType;
 }

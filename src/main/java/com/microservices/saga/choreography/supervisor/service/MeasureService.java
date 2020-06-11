@@ -1,6 +1,6 @@
 package com.microservices.saga.choreography.supervisor.service;
 
-import com.microservices.saga.choreography.supervisor.domain.SagaStepInstance;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepInstance;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaInstanceStats;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaMetrics;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaStats;
@@ -16,7 +16,9 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 
 import static java.util.Comparator.comparingLong;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 @Service
 @RequiredArgsConstructor
@@ -76,13 +78,13 @@ public class MeasureService {
                 .stepId(stepInstance.getId())
                 .startTime(stepInstance.getStartTime())
                 .endTime(stepInstance.getEndTime())
-                .status(stepInstance.getStepStatus().name())
+                .status(stepInstance.getStepStatus())
                 .build();
     }
 
     private SagaMetrics mapSagaToMetric(Long sagaId, List<SagaStepInstance> sagaStepInstances) {
         Long startTime = sagaStepInstances.stream()
-                .mapToLong(SagaStepInstance::getStartTime)
+                .mapToLong(SagaStepInstance::getStartTime) //TODO null pointer
                 .min()
                 .orElseThrow(() -> new FormattedRuntimeException("Saga doesn't have start time. Saga instance: {}", sagaId));
         SagaStepInstance lastStep = sagaStepInstances.stream()

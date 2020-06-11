@@ -1,7 +1,7 @@
 package com.microservices.saga.choreography.supervisor.service;
 
-import com.microservices.saga.choreography.supervisor.domain.SagaStepInstance;
 import com.microservices.saga.choreography.supervisor.domain.StepStatus;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepInstance;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaInstanceStats;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaStats;
 import com.microservices.saga.choreography.supervisor.exception.FormattedRuntimeException;
@@ -44,10 +44,10 @@ public class StatisticService {
         long startTime = Long.MAX_VALUE;
         long endTime = Long.MIN_VALUE;
         for (SagaStepInstance step : sagaSteps) {
-            if (step.getStepStatus() == StepStatus.FAILED) {
+            if (step.getStepStatus().equals(StepStatus.FAILED.name())) {
                 numberOfFailedSteps++;
             }
-            if (step.getStepStatus() == StepStatus.SUCCESSFUL) {
+            if (step.getStepStatus().equals(StepStatus.SUCCESSFUL.name())) {
                 numberOfSucceedSteps++;
             }
             if (Objects.nonNull(step.getStartTime()) && Objects.nonNull(step.getEndTime())) {

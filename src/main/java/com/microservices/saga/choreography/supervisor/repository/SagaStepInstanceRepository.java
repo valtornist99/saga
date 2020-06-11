@@ -1,9 +1,10 @@
 package com.microservices.saga.choreography.supervisor.repository;
 
-import com.microservices.saga.choreography.supervisor.domain.SagaStepInstance;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepInstance;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * CRUD for the saga instances
@@ -16,7 +17,7 @@ public interface SagaStepInstanceRepository extends Neo4jRepository<SagaStepInst
      * @param stepName       - the name of the step
      * @return node of the saga instance graph
      */
-    SagaStepInstance findSagaStepInstanceBySagaInstanceIdAndStepName(Long sagaInstanceId, String stepName);
+    Optional<SagaStepInstance> findSagaStepInstanceBySagaInstanceIdAndStepName(Long sagaInstanceId, String stepName);
 
     /**
      * Returns the node of the saga instance graph by the saga instance id and the id of the node in the template graph

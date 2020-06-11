@@ -1,6 +1,10 @@
-package com.microservices.saga.choreography.supervisor.domain;
+package com.microservices.saga.choreography.supervisor.domain.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -24,7 +28,7 @@ public class SagaStepInstance {
 
     private Long sagaStepDefinitionId;
 
-    private StepStatus stepStatus;
+    private String stepStatus;
 
     private Long startTime;
 

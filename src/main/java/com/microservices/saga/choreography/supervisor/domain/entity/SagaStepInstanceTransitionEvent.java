@@ -1,4 +1,4 @@
-package com.microservices.saga.choreography.supervisor.domain;
+package com.microservices.saga.choreography.supervisor.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

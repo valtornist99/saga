@@ -1,7 +1,7 @@
 package com.microservices.saga.choreography.supervisor.service;
 
-import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
-import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinitionTransitionEvent;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinitionTransitionEvent;
 import com.microservices.saga.choreography.supervisor.dto.definition.SagaStepDefinitionDto;
 import com.microservices.saga.choreography.supervisor.exception.StepDefinitionNotFoundException;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionRepository;
@@ -82,8 +82,14 @@ public class DefinitionService {
                 });
     }
 
+    /**
+     * Returns end nodes of the saga
+     *
+     * @param sagaName - name of the saga
+     * @return list of end nodes
+     */
     public List<SagaStepDefinition> getEndNodesOfSaga(String sagaName) {
-        return null;
+        return stepDefinitionRepository.findEndNodesBySagaName(sagaName);
     }
 
     /**

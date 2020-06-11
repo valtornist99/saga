@@ -1,7 +1,7 @@
 package com.microservices.saga.choreography.supervisor.repository;
 
-import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
-import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinitionTransitionEvent;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinitionTransitionEvent;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;

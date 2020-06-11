@@ -69,6 +69,9 @@ public class CompensationService {
      * Sending messages
      */
     public void sendMessage(String topicName, Headers headers, String message) {
-        producer.send(new ProducerRecord<>(topicName, message));
+        log.info("COMPENSATION: Send compensation on topic {}, headers {}", topicName, headers);
+        ProducerRecord<String, String> record = new ProducerRecord<>(topicName, message);
+        headers.forEach(header -> record.headers().add(header));
+        producer.send(record);
     }
 }

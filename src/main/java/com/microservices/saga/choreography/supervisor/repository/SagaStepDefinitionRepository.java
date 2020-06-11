@@ -1,6 +1,6 @@
 package com.microservices.saga.choreography.supervisor.repository;
 
-import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 

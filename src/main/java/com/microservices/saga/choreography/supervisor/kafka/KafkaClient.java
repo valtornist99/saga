@@ -1,9 +1,10 @@
 package com.microservices.saga.choreography.supervisor.kafka;
 
 import com.microservices.saga.choreography.supervisor.domain.Event;
-import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
 import com.microservices.saga.choreography.supervisor.exception.KafkaRuntimeException;
 import com.microservices.saga.choreography.supervisor.service.EventHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * Service that responsible for interacting with kafka
  */
 @Service
+@Slf4j
 public class KafkaClient {
     /**
      * Kafka headers keys constants
@@ -72,7 +74,6 @@ public class KafkaClient {
                 .collect(Collectors.toList());
         if (!newTopics.isEmpty()) {
             listeningTopics.addAll(newTopics);
-            consumer.subscribe(listeningTopics);
             if (isListeningClosed.get()) {
                 startListeningTopics();
             }
@@ -86,16 +87,19 @@ public class KafkaClient {
     }
 
     private void startListeningTopics() {
-        if (!isListeningClosed.get()) {
-            stopListeningTopics();
-        }
+//        if (!isListeningClosed.get()) {
+//            stopListeningTopics();
+//        }
         isListeningClosed.set(false);
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
                 //noinspection InfiniteLoopStatement
                 while (true) {
+                    log.info("Pooling messages");
+                    consumer.subscribe(listeningTopics);
                     ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(5));
+                    log.info("Messages polled");
                     for (ConsumerRecord<String, String> record : records) {
                         eventHandler.handle(getEventFromHeaders(record.headers()));
                     }

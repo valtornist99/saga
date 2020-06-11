@@ -24,6 +24,8 @@ dependencies {
 	//Kafka
 	compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.5.0'
 
+	compile 'io.micrometer:micrometer-registry-prometheus:latest.release'
+
 	compile 'org.springframework.boot:spring-boot-starter-web'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 

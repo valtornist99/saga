@@ -2,8 +2,8 @@ package com.microservices.saga.choreography.supervisor.service;
 
 import com.microservices.saga.choreography.supervisor.domain.Event;
 import com.microservices.saga.choreography.supervisor.domain.Message;
-import com.microservices.saga.choreography.supervisor.domain.definition.KafkaCompensation;
-import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
+import com.microservices.saga.choreography.supervisor.domain.entity.KafkaCompensation;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
 import com.microservices.saga.choreography.supervisor.dto.definition.SagaStepDefinitionDto;
 import com.microservices.saga.choreography.supervisor.exception.StepDefinitionNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,7 @@ import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.springframework.stereotype.Service;
 
 import java.nio.ByteBuffer;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -82,15 +83,16 @@ public class GraphService {
     }
 
     private Queue<SagaStepDefinition> searchByBreadth(List<SagaStepDefinition> endNodes) {
-        Queue<SagaStepDefinition> visitedNodes = new PriorityQueue<>();
-        Queue<SagaStepDefinition> unvisitedNodes = new PriorityQueue<>(endNodes);
+        Queue<SagaStepDefinition> visitedNodes = new LinkedList<>();
+        Queue<SagaStepDefinition> unvisitedNodes = new LinkedList<>(endNodes);
 
         while (!unvisitedNodes.isEmpty()) {
             Queue<SagaStepDefinition> newNodes = unvisitedNodes
                     .stream()
                     .flatMap(node -> definitionService.getIncomingSteps(node).stream())
                     .filter(node -> !visitedNodes.contains(node))
-                    .collect(Collectors.toCollection(PriorityQueue::new));
+                    .collect(Collectors.toCollection(LinkedList::new));
+
             visitedNodes.addAll(unvisitedNodes);
             unvisitedNodes = newNodes;
         }

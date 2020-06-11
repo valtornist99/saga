@@ -1,13 +1,20 @@
 package com.microservices.saga.choreography.supervisor.controller;
 
-import com.microservices.saga.choreography.supervisor.domain.definition.SagaStepDefinition;
+import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
 import com.microservices.saga.choreography.supervisor.dto.definition.SagaStepDefinitionDto;
 import com.microservices.saga.choreography.supervisor.kafka.KafkaClient;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionRepository;
 import com.microservices.saga.choreography.supervisor.service.GraphService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,7 +31,7 @@ public class DefinitionController {
     @PostMapping(value = "", headers = {"Content-type=application/json"})
     public ResponseEntity<SagaStepDefinition> addDefinition(@RequestBody @Valid SagaStepDefinitionDto stepDefinitionDto) {
         SagaStepDefinition sagaStepDefinition = graphService.addDefinition(stepDefinitionDto);
-//        kafkaClient.subscribeOnStepDefinition(sagaStepDefinition);
+        kafkaClient.subscribeOnStepDefinition(sagaStepDefinition);
         return ResponseEntity.ok().body(sagaStepDefinition);
     }
 

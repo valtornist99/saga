@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-@EntityScan("com.microservices.saga.choreography.supervisor.domain.definition")
+@EntityScan("com.microservices.saga.choreography.supervisor.domain.entity")
 public class ChoreographyOrchestratorApplication {
 
     public static void main(String[] args) {

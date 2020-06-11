@@ -1,6 +1,10 @@
-package com.microservices.saga.choreography.supervisor.domain.definition;
+package com.microservices.saga.choreography.supervisor.domain.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.neo4j.driver.internal.shaded.reactor.util.annotation.NonNull;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
