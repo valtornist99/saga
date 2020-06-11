@@ -46,7 +46,7 @@ public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDe
     default List<SagaStepDefinition> findEndNodesBySagaName(String sagaName) {
         return findOnlyEndNodeForSaga(sagaName).stream()
                 .map(SagaStepDefinition::getId)
-                .map(id -> findById(id).orElseThrow(IllegalArgumentException::new))
+                .map(id -> findById(id, 2).orElseThrow(IllegalArgumentException::new))
                 .collect(toList());
     }
 }

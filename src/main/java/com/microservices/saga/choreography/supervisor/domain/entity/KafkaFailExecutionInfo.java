@@ -18,7 +18,7 @@ public class KafkaFailExecutionInfo implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private String topicPattern;
+    private String topicName;
 
     private String eventType;
 }

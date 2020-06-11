@@ -81,8 +81,8 @@ public class KafkaClient {
     }
 
     public void subscribeOnStepDefinition(SagaStepDefinition stepDefinition) {
-        String successTopic = stepDefinition.getSuccessExecutionInfo().getKafkaSuccessExecutionInfo().getTopicPattern();
-        String failTopic = stepDefinition.getFailExecutionInfo().getKafkaFailExecutionInfo().getTopicPattern();
+        String successTopic = stepDefinition.getSuccessExecutionInfo().getKafkaSuccessExecutionInfo().getTopicName();
+        String failTopic = stepDefinition.getFailExecutionInfo().getKafkaFailExecutionInfo().getTopicName();
         subscribe(Arrays.asList(successTopic, failTopic));
     }
 
@@ -101,7 +101,11 @@ public class KafkaClient {
                     ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(5));
                     log.info("Messages polled");
                     for (ConsumerRecord<String, String> record : records) {
-                        eventHandler.handle(getEventFromHeaders(record.headers()));
+                        try {
+                            eventHandler.handle(getEventFromHeaders(record.headers()));
+                        } catch (Exception e) {
+                            log.error("Error while handling event", e);
+                        }
                     }
                 }
             } catch (WakeupException wakeupException) {

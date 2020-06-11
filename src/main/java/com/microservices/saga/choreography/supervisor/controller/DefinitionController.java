@@ -37,9 +37,8 @@ public class DefinitionController {
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<SagaStepDefinition> getStepDefinition(@PathVariable Long id) {
-        Optional<SagaStepDefinition> stepDefinitionRepositoryById = stepDefinitionRepository.findById(id);
-        stepDefinitionRepositoryById.ifPresent(stepDefinition -> ResponseEntity.ok().body(stepDefinition));
-        return ResponseEntity.ok().body(null);
+        Optional<SagaStepDefinition> sagaStepDefinitionOptional = stepDefinitionRepository.findById(id, 2);
+        return sagaStepDefinitionOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping(value = "/{definitionId}", produces = "application/json")
