@@ -1,6 +1,7 @@
 package com.microservices.saga.choreography.supervisor.repository;
 
 import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
+import org.springframework.data.neo4j.annotation.Depth;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 
@@ -16,6 +17,7 @@ public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDe
      * @param stepName - the name of the step
      * @return node of template graph
      */
+    @Depth(2)
     SagaStepDefinition findSagaStepDefinitionBySagaNameAndStepName(String sagaName, String stepName);
 
     /**
@@ -24,6 +26,7 @@ public interface SagaStepDefinitionRepository extends Neo4jRepository<SagaStepDe
      * @param sagaName - the name of the saga
      * @return all nodes of the saga
      */
+    @Depth(2)
     List<SagaStepDefinition> findSagaStepDefinitionsBySagaName(String sagaName);
 
     /**

@@ -2,6 +2,7 @@ package com.microservices.saga.choreography.supervisor.repository;
 
 import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
 import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinitionTransitionEvent;
+import org.springframework.data.neo4j.annotation.Depth;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
      * @param eventName the name of the event
      * @return relationship between two nodes
      */
+    @Depth(4)
     SagaStepDefinitionTransitionEvent findSagaStepDefinitionTransitionEventBySagaNameAndEventName(String sagaName, String eventName);
 
     /**
@@ -28,6 +30,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
      * @param failedEventName the name of the event
      * @return relationship between two nodes
      */
+    @Depth(4)
     SagaStepDefinitionTransitionEvent findSagaStepDefinitionTransitionEventBySagaNameAndFailedEventName(String sagaName,
                                                                                                         String failedEventName);
 
@@ -37,6 +40,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
      * @param sagaName the name of the saga
      * @return all relationships of the specific saga
      */
+    @Depth(4)
     List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsBySagaName(String sagaName);
 
     /**
@@ -45,6 +49,7 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
      * @param previousStep node of the template graph
      * @return list of template graph relationships with specified previousStep
      */
+    @Depth(4)
     List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsByPreviousStep(SagaStepDefinition previousStep);
 
     /**
@@ -53,5 +58,6 @@ public interface SagaStepDefinitionTransitionEventRepository extends Neo4jReposi
      * @param nextStep node of the template graph
      * @return list of template graph relationships with specified nextStep
      */
+    @Depth(4)
     List<SagaStepDefinitionTransitionEvent> findSagaStepDefinitionTransitionEventsByNextStep(SagaStepDefinition nextStep);
 }

@@ -144,7 +144,7 @@ public class DefinitionService {
 
             SagaStepDefinitionTransitionEvent definitionTransitionEvent = SagaStepDefinitionTransitionEvent.builder()
                     .sagaName(stepDefinition.getSagaName())
-                    .eventName(stepDefinition.getSuccessExecutionInfo().getKafkaSuccessExecutionInfo().getEventType())
+                    .eventName(previousStepDefinition.getSuccessExecutionInfo().getKafkaSuccessExecutionInfo().getEventType())
                     .failedEventName(stepDefinition.getFailExecutionInfo().getKafkaFailExecutionInfo().getEventType())
                     .creationTime(ZonedDateTime.now().toInstant().toEpochMilli())
                     .previousStep(previousStepDefinition)
