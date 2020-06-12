@@ -44,6 +44,7 @@ public class InstanceService {
                     .stepName(eventDefinition.getNextStep().getStepName())
                     .sagaName(event.getSagaName())
                     .sagaStepDefinitionId(eventDefinition.getNextStep().getId())
+                    .startTime(ZonedDateTime.now().toInstant().toEpochMilli())
                     .build();
 
             SagaStepInstanceTransitionEvent transitionEvent = SagaStepInstanceTransitionEvent.builder()
@@ -78,31 +79,22 @@ public class InstanceService {
         List<SagaStepInstance> instances = sagaStepInstanceRepository.findSagaStepInstancesBySagaInstanceId(event.getSagaInstanceId());
 
         SagaStepInstance occurredStep;
-        if (instances == null) {
-            occurredStep = SagaStepInstance.builder()
-                    .stepStatus(StepStatus.AWAITING.name())
-                    .sagaInstanceId(event.getSagaInstanceId())
-                    .stepName(occurredStepDefinition.getStepName())
-                    .sagaName(event.getSagaName())
-                    .sagaStepDefinitionId(occurredStepDefinition.getId())
-                    .startTime(sagaStartTime)
-                    .endTime(ZonedDateTime.now().toInstant().toEpochMilli())
-                    .build();
-        } else {
-            occurredStep = instances
-                    .stream()
-                    .filter(sagaStepInstance -> sagaStepInstance.getStepName().equals(occurredStepDefinition.getStepName()))
-                    .findFirst()
-                    .orElseGet(() -> SagaStepInstance.builder()
-                            .stepStatus(StepStatus.AWAITING.name())
-                            .sagaInstanceId(event.getSagaInstanceId())
-                            .stepName(occurredStepDefinition.getStepName())
-                            .sagaName(event.getSagaName())
-                            .sagaStepDefinitionId(occurredStepDefinition.getId())
-                            .startTime(sagaStartTime)
-                            .endTime(ZonedDateTime.now().toInstant().toEpochMilli())
-                            .build());
-        }
+        occurredStep = instances
+                .stream()
+                .filter(sagaStepInstance -> sagaStepInstance.getStepName().equals(occurredStepDefinition.getStepName()))
+                .findFirst()
+                .orElseGet(() -> SagaStepInstance.builder()
+                        .stepStatus(StepStatus.AWAITING.name())
+                        .sagaInstanceId(event.getSagaInstanceId())
+                        .stepName(occurredStepDefinition.getStepName())
+                        .sagaName(event.getSagaName())
+                        .sagaStepDefinitionId(occurredStepDefinition.getId())
+                        .startTime(sagaStartTime)
+                        .build())
+                .toBuilder()
+                .endTime(ZonedDateTime.now().toInstant().toEpochMilli())
+                .build();
+
         StepStatus status = isEventSuccessful(event) ? StepStatus.SUCCESSFUL : StepStatus.FAILED;
         updateStepStatus(occurredStep, status);
         return occurredStep;

@@ -13,12 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 import static java.util.Comparator.comparingLong;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor
@@ -84,7 +83,8 @@ public class MeasureService {
 
     private SagaMetrics mapSagaToMetric(Long sagaId, List<SagaStepInstance> sagaStepInstances) {
         Long startTime = sagaStepInstances.stream()
-                .mapToLong(SagaStepInstance::getStartTime) //TODO null pointer
+                .filter(step -> Objects.nonNull(step.getStartTime()))
+                .mapToLong(SagaStepInstance::getStartTime)
                 .min()
                 .orElseThrow(() -> new FormattedRuntimeException("Saga doesn't have start time. Saga instance: {}", sagaId));
         SagaStepInstance lastStep = sagaStepInstances.stream()
@@ -94,7 +94,7 @@ public class MeasureService {
                 .sagaId(sagaId)
                 .startTime(startTime)
                 .endTime(lastStep.getEndTime() == null ? 0 : lastStep.getEndTime())
-                .status(lastStep.getStepStatus().toString())
+                .status(lastStep.getStepStatus())
                 .sagaName(lastStep.getSagaName())
                 .stepMetrics(sagaStepInstances.stream().map(this::mapStepToMetric).collect(toList()))
                 .build();
