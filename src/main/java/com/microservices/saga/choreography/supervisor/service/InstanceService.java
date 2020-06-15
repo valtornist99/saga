@@ -31,6 +31,10 @@ public class InstanceService {
      * @param event event
      */
     public void handleEvent(Event event) {
+        if (sagaStepInstanceRepository.findSagaStepInstancesBySagaInstanceId(event.getSagaInstanceId()).stream()
+                .anyMatch(sagaStepInstance -> sagaStepInstance.getStepName().equals(event.getEventName()))) {
+            return;
+        }
         SagaStepDefinitionTransitionEvent eventDefinition = getEventDefinition(event);
 
         SagaStepDefinition stepDefinition = eventDefinition.getPreviousStep();

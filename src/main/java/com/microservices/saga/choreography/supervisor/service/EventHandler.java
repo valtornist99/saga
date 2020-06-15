@@ -12,10 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class EventHandler {
     private final CompensationService compensationService;
+    private final ScheduleService scheduleService;
     private final GraphService graphService;
 
     @Transactional
-    public void handle(Event event) {
+    public void handle(Event event) { //TODO add scheduling
         log.info("Polled message event name {}", event.getEventName());
         if (!graphService.isEventSuccessful(event)) {
             compensationService.compensate(event.getSagaInstanceId());

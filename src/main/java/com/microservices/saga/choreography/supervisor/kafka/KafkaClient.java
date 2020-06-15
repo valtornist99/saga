@@ -53,8 +53,14 @@ public class KafkaClient {
      */
     private final KafkaConsumer<String, String> consumer;
 
+    /**
+     * Set of listening topics
+     */
     private final Set<String> listeningTopics;
 
+    /**
+     * Constructor
+     */
     public KafkaClient(EventHandler eventHandler,
                        KafkaConsumer<String, String> kafkaConsumer) {
         this.listeningTopics = new HashSet<>();
@@ -73,23 +79,28 @@ public class KafkaClient {
                 .filter(topic -> !listeningTopics.contains(topic))
                 .collect(Collectors.toList());
         if (!newTopics.isEmpty()) {
-            listeningTopics.addAll(newTopics);
             if (isListeningClosed.get()) {
                 startListeningTopics();
             }
+            listeningTopics.addAll(newTopics);
         }
     }
 
+    /**
+     * Subscribe on on participant's topics
+     *
+     * @param stepDefinition saga participant
+     */
     public void subscribeOnStepDefinition(SagaStepDefinition stepDefinition) {
         String successTopic = stepDefinition.getSuccessExecutionInfo().getKafkaSuccessExecutionInfo().getTopicName();
         String failTopic = stepDefinition.getFailExecutionInfo().getKafkaFailExecutionInfo().getTopicName();
         subscribe(Arrays.asList(successTopic, failTopic));
     }
 
+    /**
+     * Start of listening topics
+     */
     private void startListeningTopics() {
-//        if (!isListeningClosed.get()) {
-//            stopListeningTopics();
-//        }
         isListeningClosed.set(false);
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -102,7 +113,7 @@ public class KafkaClient {
                     log.info("Messages polled");
                     for (ConsumerRecord<String, String> record : records) {
                         try {
-                            eventHandler.handle(getEventFromHeaders(record.headers()));
+                            eventHandler.handle(getEventFromHeaders(record.headers())); //TODO executor
                         } catch (Exception e) {
                             log.error("Error while handling event", e);
                         }
@@ -127,6 +138,12 @@ public class KafkaClient {
         consumer.wakeup();
     }
 
+    /**
+     * Getting event from received headers
+     *
+     * @param headers received headers
+     * @return {@link Event}
+     */
     private Event getEventFromHeaders(Headers headers) {
         Event.EventBuilder eventBuilder = Event.builder();
         for (Header header : headers) {

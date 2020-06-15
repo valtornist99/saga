@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.service.compensation;
 
+import com.microservices.saga.choreography.supervisor.domain.Message;
 import com.microservices.saga.choreography.supervisor.service.GraphService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -8,6 +9,7 @@ import org.apache.kafka.common.header.Headers;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -61,15 +63,21 @@ public class CompensationService {
      * @param sagaId id of saga to start compensation
      */
     private void startCompensation(Long sagaId) {
-        graphService.getMessagesQueueToCompensation(sagaId)
-                .forEach(message -> sendMessage(message.getTopic(), message.getHeaders(), message.getEventMessage()));
+        Queue<Message> messagesQueueToCompensation = graphService.getMessagesQueueToCompensation(sagaId);
+        messagesQueueToCompensation.forEach(message -> {
+                    try {
+                        sendMessage(message.getTopic(), message.getHeaders(), message.getEventMessage());
+                    } catch (Exception e) {
+                        log.error("Error while sending compensation message", e);
+                    }
+                });
     }
 
     /**
      * Sending messages
      */
     public void sendMessage(String topicName, Headers headers, String message) {
-        log.info("COMPENSATION: Send compensation on topic {}, headers {}", topicName, headers);
+        log.info("COMPENSATION: Send compensation on topic {}, message {}, headers {}", topicName, message, headers);
         ProducerRecord<String, String> record = new ProducerRecord<>(topicName, message);
         headers.forEach(header -> record.headers().add(header));
         producer.send(record);

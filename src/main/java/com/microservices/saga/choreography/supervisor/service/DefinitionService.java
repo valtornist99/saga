@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Service that responsible for handling {@link SagaStepDefinition} and {@link SagaStepDefinitionTransitionEvent} info
@@ -100,11 +101,14 @@ public class DefinitionService {
      */
     public List<SagaStepDefinition> getIncomingSteps(SagaStepDefinition stepDefinition) {
         List<SagaStepDefinitionTransitionEvent> incomingTransitions = transitionEventRepository
-                .findSagaStepDefinitionTransitionEventsByNextStep(stepDefinition);
+                .findSagaStepDefinitionTransitionEventsBySagaName(stepDefinition.getSagaName()).stream()
+                .filter(event -> event.getNextStep().equals(stepDefinition))
+                .collect(toList());
+
         return incomingTransitions.stream()
                 .filter(sagaStepDefinitionTransitionEvent -> sagaStepDefinitionTransitionEvent.getPreviousStep() != null)
                 .map(SagaStepDefinitionTransitionEvent::getPreviousStep)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     /**
@@ -119,7 +123,7 @@ public class DefinitionService {
         List<SagaStepDefinitionTransitionEvent> nextTransitions = transitionEventRepository
                 .findSagaStepDefinitionTransitionEventsByPreviousStep(definition);
 
-        return Stream.concat(previousTransitions.stream(), nextTransitions.stream()).collect(Collectors.toList());
+        return Stream.concat(previousTransitions.stream(), nextTransitions.stream()).collect(toList());
     }
 
     /**
@@ -145,7 +149,7 @@ public class DefinitionService {
             SagaStepDefinitionTransitionEvent definitionTransitionEvent = SagaStepDefinitionTransitionEvent.builder()
                     .sagaName(stepDefinition.getSagaName())
                     .eventName(previousStepDefinition.getSuccessExecutionInfo().getKafkaSuccessExecutionInfo().getEventType())
-                    .failedEventName(stepDefinition.getFailExecutionInfo().getKafkaFailExecutionInfo().getEventType())
+                    .failedEventName(previousStepDefinition.getFailExecutionInfo().getKafkaFailExecutionInfo().getEventType())
                     .creationTime(ZonedDateTime.now().toInstant().toEpochMilli())
                     .previousStep(previousStepDefinition)
                     .nextStep(stepDefinition)

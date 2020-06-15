@@ -68,7 +68,7 @@ public class GraphService {
     private Message getMessageToNode(Long sagaId, SagaStepDefinition stepDefinition) {
         Headers headers = getHeadersToNode(sagaId, stepDefinition);
         KafkaCompensation kafkaCompensation = stepDefinition.getCompensationInfo().getKafkaCompensation();
-        return new Message(headers, kafkaCompensation.getTopicName(), "COMPENSATION");
+        return new Message(headers, kafkaCompensation.getTopicName(), String.format("COMPENSATION STEP %s", stepDefinition.getStepName()));
     }
 
     private Headers getHeadersToNode(Long sagaId, SagaStepDefinition stepDefinition) {
@@ -86,8 +86,7 @@ public class GraphService {
         Queue<SagaStepDefinition> unvisitedNodes = new LinkedList<>(endNodes);
 
         while (!unvisitedNodes.isEmpty()) {
-            Queue<SagaStepDefinition> newNodes = unvisitedNodes
-                    .stream()
+            Queue<SagaStepDefinition> newNodes = unvisitedNodes.stream()
                     .flatMap(node -> definitionService.getIncomingSteps(node).stream())
                     .filter(node -> !visitedNodes.contains(node))
                     .collect(Collectors.toCollection(LinkedList::new));
