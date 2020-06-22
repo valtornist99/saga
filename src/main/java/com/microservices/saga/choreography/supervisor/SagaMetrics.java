@@ -16,6 +16,7 @@ public abstract class SagaMetrics {
     private static final String SAGA_NAME_LABEL = "saga_name";
     private static final String STEP_NAME_LABEL = "step_name";
     private static final String EXCEPTIONS_NAME_LABEL = "exception";
+    private static final String KAFKA_TOPIC_NAME_LABEL = "topic";
 
     private static final String SAGA_TEMPLATE_STEP_EXECUTED_TITLE = "saga_template_step_executed";
     private static final Summary prometheusSagaTemplateStepExecutedSummary = Summary.build()
@@ -59,6 +60,28 @@ public abstract class SagaMetrics {
             .labelNames(EXCEPTIONS_NAME_LABEL)
             .register();
 
+    private static final String COORDINATOR_KAFKA_TOPIC_SUBSCRIBED = "coordinator_kafka_topic_subscribed_total";
+    private static final Counter prometheusCoordinatorKafkaTopicSubscribed = Counter.build()
+            .name(COORDINATOR_KAFKA_TOPIC_SUBSCRIBED)
+            .help("Number of subscribption to topics")
+            .labelNames(KAFKA_TOPIC_NAME_LABEL)
+            .register();
+
+    private static final String COORDINATOR_KAFKA_MESSAGES_POLLED = "coordinator_kafka_messages_polled_total";
+    private static final Counter prometheusCoordinatorKafkaMessagesPolled = Counter.build()
+            .name(COORDINATOR_KAFKA_MESSAGES_POLLED)
+            .help("Number of polled messages by topics")
+            .labelNames(KAFKA_TOPIC_NAME_LABEL)
+            .register();
+
+    private static final String COORDINATOR_KAFKA_MESSAGES_COMPENSATED_PRODUCED = "coordinator_kafka_messages_compensated_produced_total";
+    private static final Counter prometheusCoordinatorKafkaMessagesCompensationProduced = Counter.build()
+            .name(COORDINATOR_KAFKA_MESSAGES_COMPENSATED_PRODUCED)
+            .help("Number of produced messages by topics")
+            .labelNames(KAFKA_TOPIC_NAME_LABEL)
+            .register();
+
+
     public static void recordSagaInstanceStep(String sagaName, String stepName, double timeExecution) {
         Metrics.summary(SAGA_TEMPLATE_STEP_EXECUTED_TITLE,
                 SAGA_NAME_LABEL, sagaName,
@@ -91,5 +114,20 @@ public abstract class SagaMetrics {
         var exceptionName = exception.getClass().getSimpleName();
         Metrics.counter(COORDINATOR_EXCEPTIONS_THROWN, EXCEPTIONS_NAME_LABEL, exceptionName).increment();
         prometheusCoordinatorExceptionsThrown.labels(exceptionName).inc();
+    }
+
+    public static void incrementCoordinatorKafkaSubscribedTopic(String topicName) {
+        Metrics.counter(COORDINATOR_KAFKA_TOPIC_SUBSCRIBED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
+        prometheusCoordinatorKafkaTopicSubscribed.labels(topicName).inc();
+    }
+
+    public static void incrementCoordinatorKafkaMessagesPolled(String topicName) {
+        Metrics.counter(COORDINATOR_KAFKA_MESSAGES_POLLED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
+        prometheusCoordinatorKafkaMessagesPolled.labels(topicName).inc();
+    }
+
+    public static void incrementCoordinatorKafkaMessagesCompensationProduced(String topicName) {
+        Metrics.counter(COORDINATOR_KAFKA_MESSAGES_COMPENSATED_PRODUCED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
+        prometheusCoordinatorKafkaMessagesCompensationProduced.labels(topicName).inc();
     }
 }
