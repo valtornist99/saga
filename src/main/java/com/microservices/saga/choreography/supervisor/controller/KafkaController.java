@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.controller;
 
+import com.microservices.saga.choreography.supervisor.SagaMetrics;
 import com.microservices.saga.choreography.supervisor.kafka.KafkaClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,5 +19,6 @@ public class KafkaController {
     @PostMapping(value = "/subscribe/{topicName}")
     public void subscribe(@PathVariable String topicName) {
         kafkaClient.subscribe(Collections.singletonList(topicName));
+        SagaMetrics.incrementCoordinatorKafkaSubscribedTopics(topicName);
     }
 }

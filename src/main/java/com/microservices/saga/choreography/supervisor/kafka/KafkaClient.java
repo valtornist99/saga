@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.kafka;
 
+import com.microservices.saga.choreography.supervisor.SagaMetrics;
 import com.microservices.saga.choreography.supervisor.domain.Event;
 import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
 import com.microservices.saga.choreography.supervisor.exception.KafkaRuntimeException;
@@ -116,6 +117,9 @@ public class KafkaClient {
                             eventHandler.handle(getEventFromHeaders(record.headers())); //TODO executor
                         } catch (Exception e) {
                             log.error("Error while handling event", e);
+                        }
+                        finally {
+                            SagaMetrics.incrementCoordinatorKafkaMessagesPolled(record.topic());
                         }
                     }
                 }

@@ -116,7 +116,7 @@ public abstract class SagaMetrics {
         prometheusCoordinatorExceptionsThrown.labels(exceptionName).inc();
     }
 
-    public static void incrementCoordinatorKafkaSubscribedTopic(String topicName) {
+    public static void incrementCoordinatorKafkaSubscribedTopics(String topicName) {
         Metrics.counter(COORDINATOR_KAFKA_TOPIC_SUBSCRIBED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
         prometheusCoordinatorKafkaTopicSubscribed.labels(topicName).inc();
     }

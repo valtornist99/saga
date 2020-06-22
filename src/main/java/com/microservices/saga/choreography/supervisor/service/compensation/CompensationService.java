@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.service.compensation;
 
+import com.microservices.saga.choreography.supervisor.SagaMetrics;
 import com.microservices.saga.choreography.supervisor.domain.Message;
 import com.microservices.saga.choreography.supervisor.service.GraphService;
 import lombok.extern.slf4j.Slf4j;
@@ -81,5 +82,6 @@ public class CompensationService {
         ProducerRecord<String, String> record = new ProducerRecord<>(topicName, message);
         headers.forEach(header -> record.headers().add(header));
         producer.send(record);
+        SagaMetrics.incrementCoordinatorKafkaMessagesCompensationProduced(topicName);
     }
 }
