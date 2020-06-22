@@ -15,6 +15,7 @@ import io.prometheus.client.Summary;
 public abstract class SagaMetrics {
     private static final String SAGA_NAME_LABEL = "saga_name";
     private static final String STEP_NAME_LABEL = "step_name";
+    private static final String EXCEPTIONS_NAME_LABEL = "exception";
 
     private static final String SAGA_TEMPLATE_STEP_EXECUTED_TITLE = "saga_template_step_executed";
     private static final Summary prometheusSagaTemplateStepExecutedSummary = Summary.build()
@@ -51,6 +52,13 @@ public abstract class SagaMetrics {
             .labelNames(SAGA_NAME_LABEL)
             .register();
 
+    private static final String COORDINATOR_EXCEPTIONS_THROWN = "coordinator_exception_thrown_total";
+    private static final Counter prometheusCoordinatorExceptionsThrown = Counter.build()
+            .name(COORDINATOR_EXCEPTIONS_THROWN)
+            .help("Number of thrown exceptions")
+            .labelNames(EXCEPTIONS_NAME_LABEL)
+            .register();
+
     public static void recordSagaInstanceStep(String sagaName, String stepName, double timeExecution) {
         Metrics.summary(SAGA_TEMPLATE_STEP_EXECUTED_TITLE,
                 SAGA_NAME_LABEL, sagaName,
@@ -77,5 +85,11 @@ public abstract class SagaMetrics {
     public static void incrementSagaInstanceCompensated(String sagaName) {
         Metrics.counter(SAGA_INSTANCE_COMPENSATED_TOTAL_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaInstanceCompensatedCounter.labels(sagaName).inc();
+    }
+
+    public static void incrementCoordinatorExceptionsThrown(Exception exception) {
+        var exceptionName = exception.getClass().getCanonicalName();
+        Metrics.counter(COORDINATOR_EXCEPTIONS_THROWN, EXCEPTIONS_NAME_LABEL, exceptionName).increment();
+        prometheusCoordinatorExceptionsThrown.labels(exceptionName).inc();
     }
 }
