@@ -6,6 +6,7 @@ import com.microservices.saga.choreography.supervisor.dto.definition.SagaStepDef
 import com.microservices.saga.choreography.supervisor.exception.StepDefinitionNotFoundException;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionRepository;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionTransitionEventRepository;
+import com.microservices.saga.choreography.supervisor.SagaMetrics;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -47,6 +48,13 @@ public class DefinitionService {
     public SagaStepDefinition addDefinition(SagaStepDefinitionDto stepDefinitionDto) {
         SagaStepDefinition stepDefinition = mapper.map(stepDefinitionDto, SagaStepDefinition.class);
         @NonNull List<String> previousSteps = stepDefinitionDto.getPreviousSteps();
+        
+        // If it's the start of Saga template
+        // Update total number of templates
+        if (previousSteps.isEmpty()) {
+            SagaMetrics.incrementSagaTemplate(stepDefinition.getSagaName());
+        }
+
         saveTransitionEvent(stepDefinition, previousSteps);
         return stepDefinitionRepository.save(stepDefinition);
     }

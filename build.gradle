@@ -24,8 +24,6 @@ dependencies {
 	//Kafka
 	compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.5.0'
 
-	compile 'io.micrometer:micrometer-registry-prometheus:latest.release'
-
 	compile 'org.springframework.boot:spring-boot-starter-web'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
@@ -33,6 +31,20 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+
+	// Micrometer
+	compile 'io.micrometer:micrometer-core:latest.integration'
+	compile 'io.micrometer:micrometer-registry-prometheus:latest.release'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	// Version 0.9 _does not_ expose io.prometheus.client.exporter.MetricsServlet
+	// Since that, we can't inject it into Spring Boot HTTP Server
+	// TODO: consider to open an issue at https://github.com/prometheus/client_java/issues
+	compile group: 'io.prometheus', name: 'simpleclient', version: '0.8.1'
+	compile group: 'io.prometheus', name: 'simpleclient_hotspot', version: '0.8.1'
+	compile group: 'io.prometheus', name: 'simpleclient_common', version: '0.8.1'
+	compile group: 'io.prometheus', name: 'simpleclient_servlet', version: '0.8.1'
+	compile group: 'io.prometheus', name: 'simpleclient_httpserver', version: '0.8.1'
 }
 
 test {
