@@ -1,5 +1,7 @@
 package com.microservices.saga.choreography.supervisor.exception;
 
+import com.microservices.saga.choreography.supervisor.SagaMetrics;
+
 public class StepDefinitionNotFoundException extends FormattedException {
 
     /**
@@ -11,5 +13,6 @@ public class StepDefinitionNotFoundException extends FormattedException {
      */
     public StepDefinitionNotFoundException(String messagePattern, Object... params) {
         super(messagePattern, params);
+        SagaMetrics.incrementCoordinatorExceptionsThrown(this);
     }
 }
