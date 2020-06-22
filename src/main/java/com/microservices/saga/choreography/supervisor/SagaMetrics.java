@@ -88,7 +88,7 @@ public abstract class SagaMetrics {
     }
 
     public static void incrementCoordinatorExceptionsThrown(Exception exception) {
-        var exceptionName = exception.getClass().getCanonicalName();
+        var exceptionName = exception.getClass().getSimpleName();
         Metrics.counter(COORDINATOR_EXCEPTIONS_THROWN, EXCEPTIONS_NAME_LABEL, exceptionName).increment();
         prometheusCoordinatorExceptionsThrown.labels(exceptionName).inc();
     }
