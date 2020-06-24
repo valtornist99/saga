@@ -117,8 +117,7 @@ public class KafkaClient {
                             eventHandler.handle(getEventFromHeaders(record.headers())); //TODO executor
                         } catch (Exception e) {
                             log.error("Error while handling event", e);
-                        }
-                        finally {
+                        } finally {
                             SagaMetrics.incrementCoordinatorKafkaMessagesPolled(record.topic());
                         }
                     }
