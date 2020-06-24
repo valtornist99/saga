@@ -10,11 +10,9 @@ public class FormattedRuntimeException extends RuntimeException {
 
     public FormattedRuntimeException(String messagePattern, Object... params) {
         super(MessageFormatter.arrayFormat(messagePattern, params).getMessage());
-        sagaMetrics.incrementCoordinatorExceptionsThrown(this);
     }
 
     public FormattedRuntimeException(String messagePattern, Throwable cause, Object... params) {
         super(MessageFormatter.arrayFormat(messagePattern, params).getMessage(), cause);
-        sagaMetrics.incrementCoordinatorExceptionsThrown(this);
     }
 }
