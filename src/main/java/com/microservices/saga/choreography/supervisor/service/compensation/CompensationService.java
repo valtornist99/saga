@@ -1,12 +1,13 @@
 package com.microservices.saga.choreography.supervisor.service.compensation;
 
-import com.microservices.saga.choreography.supervisor.SagaMetrics;
+import com.microservices.saga.choreography.supervisor.components.SagaMetrics;
 import com.microservices.saga.choreography.supervisor.domain.Message;
 import com.microservices.saga.choreography.supervisor.service.GraphService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Headers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -28,6 +29,9 @@ public class CompensationService {
      * Graph handler
      */
     private final GraphService graphService;
+
+    @Autowired
+    private SagaMetrics sagaMetrics;
 
     /**
      * Compensation map
@@ -82,6 +86,6 @@ public class CompensationService {
         ProducerRecord<String, String> record = new ProducerRecord<>(topicName, message);
         headers.forEach(header -> record.headers().add(header));
         producer.send(record);
-        SagaMetrics.incrementCoordinatorKafkaMessagesCompensationProduced(topicName);
+        sagaMetrics.incrementCoordinatorKafkaMessagesCompensationProduced(topicName);
     }
 }

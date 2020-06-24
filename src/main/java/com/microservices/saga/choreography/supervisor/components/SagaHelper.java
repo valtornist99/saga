@@ -1,7 +1,6 @@
 package com.microservices.saga.choreography.supervisor.components;
 
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionRepository;
-import com.microservices.saga.choreography.supervisor.SagaMetrics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +12,9 @@ import java.util.HashSet;
 public class SagaHelper {
     @Autowired
     private SagaStepDefinitionRepository sagaTemplateStepRepository;
+
+    @Autowired
+    private SagaMetrics sagaMetrics;
 
     public boolean isFirstStepOfSagaInstance(String sagaName, String stepName) {
         // TODO: consider sort of nodes
@@ -37,7 +39,7 @@ public class SagaHelper {
         var sagaTemplateNames = getSagaTemplateNames();
 
         for (var sagaTemplateName : sagaTemplateNames) {
-            SagaMetrics.incrementSagaTemplate(sagaTemplateName);
+            sagaMetrics.incrementSagaTemplate(sagaTemplateName);
         }
     }
 

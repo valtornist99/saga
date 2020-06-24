@@ -1,8 +1,9 @@
-package com.microservices.saga.choreography.supervisor;
+package com.microservices.saga.choreography.supervisor.components;
 
 import io.micrometer.core.instrument.Metrics;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Summary;
+import org.springframework.stereotype.Component;
 
 /**
  * This Class expose methods for recording specific metrics
@@ -12,7 +13,8 @@ import io.prometheus.client.Summary;
  *
  * TODO: consider better namings for class name and name methods
  */
-public abstract class SagaMetrics {
+@Component
+public class SagaMetrics {
     private static final String SAGA_NAME_LABEL = "saga_name";
     private static final String STEP_NAME_LABEL = "step_name";
     private static final String EXCEPTIONS_NAME_LABEL = "exception";
@@ -82,7 +84,7 @@ public abstract class SagaMetrics {
             .register();
 
 
-    public static void recordSagaInstanceStep(String sagaName, String stepName, double timeExecution) {
+    public void recordSagaInstanceStep(String sagaName, String stepName, double timeExecution) {
         Metrics.summary(SAGA_TEMPLATE_STEP_EXECUTED_TITLE,
                 SAGA_NAME_LABEL, sagaName,
                 STEP_NAME_LABEL, stepName
@@ -90,43 +92,43 @@ public abstract class SagaMetrics {
         prometheusSagaTemplateStepExecutedSummary.labels(sagaName, stepName).observe(timeExecution);
     }
 
-    public static void incrementSagaTemplate(String sagaName) {
+    public void incrementSagaTemplate(String sagaName) {
         Metrics.counter(SAGA_TEMPLATE_TOTAL_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaTemplateTotalCounter.labels(sagaName).inc();
     }
 
-    public static void incrementSagaInstanceStarted(String sagaName) {
+    public void incrementSagaInstanceStarted(String sagaName) {
         Metrics.counter(SAGA_INSTANCE_STARTED_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaInstanceStartedCounter.labels(sagaName).inc();
     }
 
-    public static void incrementSagaInstanceCompleted(String sagaName) {
+    public void incrementSagaInstanceCompleted(String sagaName) {
         Metrics.counter(SAGA_INSTANCE_COMPLETED_TOTAL_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaInstanceCompletedCounter.inc();
     }
 
-    public static void incrementSagaInstanceCompensated(String sagaName) {
+    public void incrementSagaInstanceCompensated(String sagaName) {
         Metrics.counter(SAGA_INSTANCE_COMPENSATED_TOTAL_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaInstanceCompensatedCounter.labels(sagaName).inc();
     }
 
-    public static void incrementCoordinatorExceptionsThrown(Exception exception) {
+    public void incrementCoordinatorExceptionsThrown(Exception exception) {
         var exceptionName = exception.getClass().getSimpleName();
         Metrics.counter(COORDINATOR_EXCEPTIONS_THROWN, EXCEPTIONS_NAME_LABEL, exceptionName).increment();
         prometheusCoordinatorExceptionsThrown.labels(exceptionName).inc();
     }
 
-    public static void incrementCoordinatorKafkaSubscribedTopics(String topicName) {
+    public void incrementCoordinatorKafkaSubscribedTopics(String topicName) {
         Metrics.counter(COORDINATOR_KAFKA_TOPIC_SUBSCRIBED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
         prometheusCoordinatorKafkaTopicSubscribed.labels(topicName).inc();
     }
 
-    public static void incrementCoordinatorKafkaMessagesPolled(String topicName) {
+    public void incrementCoordinatorKafkaMessagesPolled(String topicName) {
         Metrics.counter(COORDINATOR_KAFKA_MESSAGES_POLLED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
         prometheusCoordinatorKafkaMessagesPolled.labels(topicName).inc();
     }
 
-    public static void incrementCoordinatorKafkaMessagesCompensationProduced(String topicName) {
+    public void incrementCoordinatorKafkaMessagesCompensationProduced(String topicName) {
         Metrics.counter(COORDINATOR_KAFKA_MESSAGES_COMPENSATED_PRODUCED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
         prometheusCoordinatorKafkaMessagesCompensationProduced.labels(topicName).inc();
     }

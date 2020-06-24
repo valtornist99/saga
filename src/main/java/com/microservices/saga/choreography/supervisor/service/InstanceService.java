@@ -10,7 +10,7 @@ import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepInst
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionTransitionEventRepository;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepInstanceRepository;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepInstanceTransitionRepository;
-import com.microservices.saga.choreography.supervisor.SagaMetrics;
+import com.microservices.saga.choreography.supervisor.components.SagaMetrics;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,9 @@ public class InstanceService {
     @Autowired
     private SagaHelper sagaHelper;
 
+    @Autowired
+    private SagaMetrics sagaMetrics;
+
     /**
      * Handling new event
      *
@@ -49,7 +52,7 @@ public class InstanceService {
         var sagaName = stepDefinition.getSagaName();
 
         if (sagaHelper.isFirstStepOfSagaInstance(sagaName, stepName)) {
-            SagaMetrics.incrementSagaInstanceStarted(sagaName);
+            sagaMetrics.incrementSagaInstanceStarted(sagaName);
         }
 //        Doesn't work because process can't identify the end of saga
 //        if (sagaHelper.isLastStepOfSagaInstance(sagaName, stepName)) {
@@ -62,7 +65,7 @@ public class InstanceService {
         // First step has incorrect value
         // due incorrect saved values of the start timestamp
         var executionTime = occurredStep.getEndTime() - occurredStep.getStartTime();
-        SagaMetrics.recordSagaInstanceStep(sagaName, occurredStep.getStepName(), executionTime);
+        sagaMetrics.recordSagaInstanceStep(sagaName, occurredStep.getStepName(), executionTime);
 
 
         if (eventDefinition.getNextStep() != null) {
