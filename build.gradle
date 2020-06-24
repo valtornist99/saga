@@ -6,6 +6,8 @@ plugins {
 
 group = 'com.microservices'
 version = '0.1.0'
+
+apply plugin: 'maven'
 sourceCompatibility = '11'
 
 repositories {
