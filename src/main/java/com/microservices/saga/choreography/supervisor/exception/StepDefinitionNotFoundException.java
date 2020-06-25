@@ -1,12 +1,6 @@
 package com.microservices.saga.choreography.supervisor.exception;
 
-import com.microservices.saga.choreography.supervisor.components.SagaMetrics;
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class StepDefinitionNotFoundException extends FormattedException {
-    @Autowired
-    private SagaMetrics sagaMetrics;
-
     /**
      * Constructor that creates an exception with a parameterized message
      *
@@ -16,6 +10,5 @@ public class StepDefinitionNotFoundException extends FormattedException {
      */
     public StepDefinitionNotFoundException(String messagePattern, Object... params) {
         super(messagePattern, params);
-        sagaMetrics.incrementCoordinatorExceptionsThrown(this);
     }
 }
