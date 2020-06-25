@@ -112,7 +112,7 @@ public class SagaMetrics {
         prometheusSagaInstanceCompensatedCounter.labels(sagaName).inc();
     }
 
-    public void incrementCoordinatorExceptionsThrown(Exception exception) {
+    public void countCoordinatorExceptionsThrown(Exception exception) {
         var exceptionName = exception.getClass().getSimpleName();
         Metrics.counter(COORDINATOR_EXCEPTIONS_THROWN, EXCEPTIONS_NAME_LABEL, exceptionName).increment();
         prometheusCoordinatorExceptionsThrown.labels(exceptionName).inc();
