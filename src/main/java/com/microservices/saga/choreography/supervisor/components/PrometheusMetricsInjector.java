@@ -12,11 +12,20 @@ import io.prometheus.client.exporter.MetricsServlet;
  * Here we inject their servlet into our HTTP server at specific url
  * This servlet generates content in prometheus format by accessing specified url
  *
+ * {@link PrometheusMetricsInjector#injectPrometheusServlet}
+ *
  * More:
  * https://github.com/prometheus/client_java#http
  */
 @Component
 public class PrometheusMetricsInjector {
+
+    /**
+     * This method are invoked by Spring at Bean construction phase
+     * The only purpose is to create servlet and return it for further injection
+     *
+     * @return Bean injection for HTTP server
+     */
     @Bean
     public ServletRegistrationBean injectPrometheusServlet() {
 
