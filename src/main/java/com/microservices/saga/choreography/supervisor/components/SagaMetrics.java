@@ -92,22 +92,22 @@ public class SagaMetrics {
         prometheusSagaTemplateStepExecutedSummary.labels(sagaName, stepName).observe(timeExecution);
     }
 
-    public void incrementSagaTemplate(String sagaName) {
+    public void countSagaTemplate(String sagaName) {
         Metrics.counter(SAGA_TEMPLATE_TOTAL_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaTemplateTotalCounter.labels(sagaName).inc();
     }
 
-    public void incrementSagaInstanceStarted(String sagaName) {
+    public void countSagaInstanceStarted(String sagaName) {
         Metrics.counter(SAGA_INSTANCE_STARTED_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaInstanceStartedCounter.labels(sagaName).inc();
     }
 
-    public void incrementSagaInstanceCompleted(String sagaName) {
+    public void countSagaInstanceCompleted(String sagaName) {
         Metrics.counter(SAGA_INSTANCE_COMPLETED_TOTAL_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaInstanceCompletedCounter.inc();
     }
 
-    public void incrementSagaInstanceCompensated(String sagaName) {
+    public void countSagaInstanceCompensated(String sagaName) {
         Metrics.counter(SAGA_INSTANCE_COMPENSATED_TOTAL_TITLE, SAGA_NAME_LABEL, sagaName).increment();
         prometheusSagaInstanceCompensatedCounter.labels(sagaName).inc();
     }
@@ -118,17 +118,17 @@ public class SagaMetrics {
         prometheusCoordinatorExceptionsThrown.labels(exceptionName).inc();
     }
 
-    public void incrementCoordinatorKafkaSubscribedTopics(String topicName) {
+    public void countCoordinatorKafkaSubscribedTopics(String topicName) {
         Metrics.counter(COORDINATOR_KAFKA_TOPIC_SUBSCRIBED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
         prometheusCoordinatorKafkaTopicSubscribed.labels(topicName).inc();
     }
 
-    public void incrementCoordinatorKafkaMessagesPolled(String topicName) {
+    public void countCoordinatorKafkaMessagesPolled(String topicName) {
         Metrics.counter(COORDINATOR_KAFKA_MESSAGES_POLLED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
         prometheusCoordinatorKafkaMessagesPolled.labels(topicName).inc();
     }
 
-    public void incrementCoordinatorKafkaMessagesCompensationProduced(String topicName) {
+    public void countCoordinatorKafkaMessagesCompensationProduced(String topicName) {
         Metrics.counter(COORDINATOR_KAFKA_MESSAGES_COMPENSATED_PRODUCED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
         prometheusCoordinatorKafkaMessagesCompensationProduced.labels(topicName).inc();
     }

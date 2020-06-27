@@ -23,6 +23,6 @@ public class KafkaController {
     @PostMapping(value = "/subscribe/{topicName}")
     public void subscribe(@PathVariable String topicName) {
         kafkaClient.subscribe(Collections.singletonList(topicName));
-        sagaMetrics.incrementCoordinatorKafkaSubscribedTopics(topicName);
+        sagaMetrics.countCoordinatorKafkaSubscribedTopics(topicName);
     }
 }

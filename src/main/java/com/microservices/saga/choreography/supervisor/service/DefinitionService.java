@@ -56,7 +56,7 @@ public class DefinitionService {
         // If it's the start of Saga template
         // Update total number of templates
         if (previousSteps.isEmpty()) {
-            sagaMetrics.incrementSagaTemplate(stepDefinition.getSagaName());
+            sagaMetrics.countSagaTemplate(stepDefinition.getSagaName());
         }
 
         saveTransitionEvent(stepDefinition, previousSteps);

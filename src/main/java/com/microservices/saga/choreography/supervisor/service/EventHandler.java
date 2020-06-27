@@ -26,7 +26,7 @@ public class EventHandler {
         if (!graphService.isEventSuccessful(event)) {
             compensationService.compensate(event.getSagaInstanceId());
             // Compensation have been completed
-            sagaMetrics.incrementSagaInstanceCompensated(event.getSagaName());
+            sagaMetrics.countSagaInstanceCompensated(event.getSagaName());
         }
         graphService.handleSagaInstanceEvent(event);
     }

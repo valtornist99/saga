@@ -122,7 +122,7 @@ public class KafkaClient {
                         } catch (Exception e) {
                             log.error("Error while handling event", e);
                         } finally {
-                            sagaMetrics.incrementCoordinatorKafkaMessagesPolled(record.topic());
+                            sagaMetrics.countCoordinatorKafkaMessagesPolled(record.topic());
                         }
                     }
                 }

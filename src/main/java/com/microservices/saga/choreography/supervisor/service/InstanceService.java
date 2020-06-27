@@ -52,7 +52,7 @@ public class InstanceService {
         var sagaName = stepDefinition.getSagaName();
 
         if (sagaHelper.isFirstStepOfSagaInstance(sagaName, stepName)) {
-            sagaMetrics.incrementSagaInstanceStarted(sagaName);
+            sagaMetrics.countSagaInstanceStarted(sagaName);
         }
 //        Doesn't work because process can't identify the end of saga
 //        if (sagaHelper.isLastStepOfSagaInstance(sagaName, stepName)) {

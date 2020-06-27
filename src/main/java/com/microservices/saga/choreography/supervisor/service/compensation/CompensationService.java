@@ -86,6 +86,6 @@ public class CompensationService {
         ProducerRecord<String, String> record = new ProducerRecord<>(topicName, message);
         headers.forEach(header -> record.headers().add(header));
         producer.send(record);
-        sagaMetrics.incrementCoordinatorKafkaMessagesCompensationProduced(topicName);
+        sagaMetrics.countCoordinatorKafkaMessagesCompensationProduced(topicName);
     }
 }

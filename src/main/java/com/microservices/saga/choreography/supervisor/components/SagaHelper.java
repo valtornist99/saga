@@ -39,7 +39,7 @@ public class SagaHelper {
         var sagaTemplateNames = getSagaTemplateNames();
 
         for (var sagaTemplateName : sagaTemplateNames) {
-            sagaMetrics.incrementSagaTemplate(sagaTemplateName);
+            sagaMetrics.countSagaTemplate(sagaTemplateName);
         }
     }
 
