@@ -21,7 +21,19 @@
         <validation-api.version>2.0.1.Final</validation-api.version>
         <org.springframework.boot.version>2.2.0.RELEASE</org.springframework.boot.version>
         <org.apache.maven.plugins.version>2.19.1</org.apache.maven.plugins.version>
+
+        <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
+        <docker-maven-plugin.version>1.0.0</docker-maven-plugin.version>
+        <docker.ip>192.168.99.100</docker.ip>
     </properties>
+
+    <!-- Нужен для buildnumber-maven-plugin. Необходимо указать адрес репозитория -->
+    <scm>
+        <connection>scm:git:https://https://github.com/microservices-course-itmo/saga.git</connection>
+        <developerConnection>scm:git:https://https://github.com/microservices-course-itmo/saga.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://https://github.com/microservices-course-itmo/saga.git</url>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -124,6 +136,71 @@
                     </archive>
                 </configuration>
             </plugin>
+
+            <!-- Нужен для определения текущей ветки(scmBranch) и хэша текущего коммита(buildNumber) -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>${buildnumber-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+
+                <configuration>
+
+                    <image>${project.artifactId}_${project.version}_${scmBranch}_${buildNumber}</image>
+                    <newName>${docker.ip}:5000/${project.artifactId}_${buildNumber}</newName>
+
+                    <imageName>${project.artifactId}_${project.version}_${scmBranch}_${buildNumber}</imageName>
+                    <dockerDirectory>.</dockerDirectory>
+                    <dockerHost>https://${docker.ip}:2376</dockerHost>
+                    <dockerCertPath>C:\Users\Edik\.docker\machine\machines\default</dockerCertPath>
+                    <resources>
+                        <resource>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>docker image build</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>tag</goal>
+                        </goals>
+                    </execution>
+                    <!--
+                    push может быть осуществлен после запуска Docker Registry
+                    <execution>
+                        <configuration>
+                            <imageName>${docker.ip}:5000/${project.artifactId}_${buildNumber}</imageName>
+                        </configuration>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                    -->
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>
