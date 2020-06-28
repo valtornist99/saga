@@ -24,6 +24,9 @@
 
         <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
         <docker-maven-plugin.version>1.0.0</docker-maven-plugin.version>
+
+        <!-- Существует переменная среды DOCKER_HOST, однако в ней помимо ip указан также порт и протокол.
+        В данную переменную нужно скопировать только ip докер хоста -->
         <docker.ip>192.168.99.100</docker.ip>
     </properties>
 
@@ -162,13 +165,13 @@
 
                 <configuration>
 
-                    <image>${project.artifactId}_${project.version}_${scmBranch}_${buildNumber}</image>
-                    <newName>${docker.ip}:5000/${project.artifactId}_${buildNumber}</newName>
+                    <image>${project.artifactId}</image>
+                    <newName>${docker.ip}:5000/${scmBranch}_${project.version}</newName>
 
-                    <imageName>${project.artifactId}_${project.version}_${scmBranch}_${buildNumber}</imageName>
+                    <imageName>${project.artifactId}</imageName>
                     <dockerDirectory>.</dockerDirectory>
                     <dockerHost>https://${docker.ip}:2376</dockerHost>
-                    <dockerCertPath>C:\Users\Edik\.docker\machine\machines\default</dockerCertPath>
+                    <dockerCertPath>${env.DOCKER_CERT_PATH}</dockerCertPath>
                     <resources>
                         <resource>
                             <directory>${project.build.directory}</directory>
@@ -190,7 +193,7 @@
                     push может быть осуществлен после запуска Docker Registry
                     <execution>
                         <configuration>
-                            <imageName>${docker.ip}:5000/${project.artifactId}_${buildNumber}</imageName>
+                            <imageName>${docker.ip}:5000/${scmBranch}_${project.version}</imageName>
                         </configuration>
                         <phase>deploy</phase>
                         <goals>
