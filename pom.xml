@@ -7,10 +7,11 @@
     <groupId>com.microservices</groupId>
     <artifactId>choreography-orchestrator</artifactId>
     <version>0.1.0</version>
+    <packaging>jar</packaging>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
         <version>2.3.1.RELEASE</version>
     </parent>
 
@@ -21,9 +22,6 @@
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
         <kafka-clients.version>2.5.0</kafka-clients.version>
         <micrometer-registry-prometheus.version>1.5.2</micrometer-registry-prometheus.version>
-        <spring-boot-starter-web.version>2.3.1.RELEASE</spring-boot-starter-web.version>
-        <spring-boot-starter-test.version>2.3.1.RELEASE</spring-boot-starter-test.version>
-        <spring-boot-starter-data-neo4j.version>2.3.1.RELEASE</spring-boot-starter-data-neo4j.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <org.springframework.boot.version>2.2.0.RELEASE</org.springframework.boot.version>
         <org.apache.maven.plugins.version>2.19.1</org.apache.maven.plugins.version>
@@ -63,12 +61,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot-starter-web.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring-boot-starter-test.version}</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -80,18 +76,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-neo4j</artifactId>
-            <version>${spring-boot-starter-data-neo4j.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>${validation-api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-dependencies-parent</artifactId>
-            <version>2.3.0.RELEASE</version>
-            <type>pom</type>
         </dependency>
     </dependencies>
 
@@ -104,25 +93,6 @@
                 <configuration>
                     <source>11</source>
                     <target>11</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${org.apache.maven.plugins.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.microservices.saga.choreography.supervisor.ChoreographyOrchestratorApplication</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
         </plugins>
