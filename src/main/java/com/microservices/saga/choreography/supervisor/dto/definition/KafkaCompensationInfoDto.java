@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class KafkaCompensationInfoDto {
     private String topicName;
+    private String eventType;
 }
