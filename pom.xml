@@ -21,7 +21,6 @@
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
         <kafka-clients.version>2.5.0</kafka-clients.version>
-        <org.apache.maven.plugins.version>2.19.1</org.apache.maven.plugins.version>
     </properties>
 
     <dependencies>
