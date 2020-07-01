@@ -2,16 +2,14 @@ package com.microservices.saga.choreography.supervisor;
 
 import com.microservices.saga.choreography.supervisor.components.SagaMetrics;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class Logger {
     private org.slf4j.Logger log;
-
-    @Autowired
     private SagaMetrics metrics;
 
-    public Logger(Class clazz) {
-        log = LoggerFactory.getLogger(clazz);
+    public Logger(Class callingClass) {
+        log = LoggerFactory.getLogger(callingClass);
+        metrics = new SagaMetrics();
     }
 
     public void trace(String message) {
