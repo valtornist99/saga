@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.components;
 
+import com.microservices.saga.choreography.supervisor.Logger;
 import com.microservices.saga.choreography.supervisor.annotations.Log;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -32,9 +33,8 @@ public class LogBeanPostProcessor implements BeanPostProcessor {
             // Allow access to private fields
             field.setAccessible(true);
 
-            // Update field with our logger
-            // TODO: put logger there
-            ReflectionUtils.setField(field, bean, 10);
+            // Inject our logger
+            ReflectionUtils.setField(field, bean, new Logger(beanClass));
         }
     }
 }
