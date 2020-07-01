@@ -1,7 +1,7 @@
 package com.microservices.saga.choreography.supervisor.components;
 
 import com.microservices.saga.choreography.supervisor.Logger;
-import com.microservices.saga.choreography.supervisor.annotations.Log;
+import com.microservices.saga.choreography.supervisor.annotations.InjectLogger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
 @Component
-public class LogBeanPostProcessor implements BeanPostProcessor {
+public class InjectLoggerBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -23,7 +23,7 @@ public class LogBeanPostProcessor implements BeanPostProcessor {
         var fields = beanClass.getDeclaredFields();
 
         for (var field : fields) {
-            var annotation = AnnotationUtils.getAnnotation(field, Log.class);
+            var annotation = AnnotationUtils.getAnnotation(field, InjectLogger.class);
 
             // Skip irrelevant fields
             if (annotation == null) {
