@@ -1,7 +1,7 @@
 package com.microservices.saga.choreography.supervisor.components;
 
-import com.microservices.saga.choreography.supervisor.EventLogger;
 import com.microservices.saga.choreography.supervisor.annotations.InjectEventLogger;
+import com.microservices.saga.choreography.supervisor.logging.EventLogger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;

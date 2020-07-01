@@ -1,4 +1,4 @@
-package com.microservices.saga.choreography.supervisor;
+package com.microservices.saga.choreography.supervisor.logging;
 
 public enum Events {
     // TODO: increase amount of available events

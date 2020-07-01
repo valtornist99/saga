@@ -1,6 +1,6 @@
 package com.microservices.saga.choreography.supervisor.components;
 
-import com.microservices.saga.choreography.supervisor.Events;
+import com.microservices.saga.choreography.supervisor.logging.Events;
 import io.micrometer.core.instrument.Metrics;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Summary;

@@ -1,10 +1,13 @@
 package com.microservices.saga.choreography.supervisor.controller;
 
+import com.microservices.saga.choreography.supervisor.annotations.InjectEventLogger;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaInstanceStats;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaMetrics;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaStats;
 import com.microservices.saga.choreography.supervisor.dto.measure.StepMetrics;
 import com.microservices.saga.choreography.supervisor.exception.StepDefinitionNotFoundException;
+import com.microservices.saga.choreography.supervisor.logging.EventLogger;
+import com.microservices.saga.choreography.supervisor.logging.Events;
 import com.microservices.saga.choreography.supervisor.service.MeasureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +23,12 @@ import java.util.List;
 public class MeasureController {
     private final MeasureService measureService;
 
+    @InjectEventLogger
+    EventLogger logger;
+
     @GetMapping("/step")
     public List<StepMetrics> getAllStepMetrics() {
+        logger.info(Events.EXCEPTION);
         return measureService.getAllStepMetrics();
     }
 

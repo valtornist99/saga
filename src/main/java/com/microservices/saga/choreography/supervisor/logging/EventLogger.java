@@ -1,4 +1,4 @@
-package com.microservices.saga.choreography.supervisor;
+package com.microservices.saga.choreography.supervisor.logging;
 
 import com.microservices.saga.choreography.supervisor.components.SagaMetrics;
 import lombok.AllArgsConstructor;
@@ -30,8 +30,8 @@ import org.slf4j.Logger;
  */
 @AllArgsConstructor
 public class EventLogger {
-    private Logger log;
-    private SagaMetrics metrics;
+    private final Logger log;
+    private final SagaMetrics metrics;
 
     public void trace(Events event, Object... payload) {
         log.info(event.getTemplate(), payload);
