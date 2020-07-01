@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.service;
 
+import com.microservices.saga.choreography.supervisor.annotations.Log;
 import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepInstance;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaInstanceStats;
 import com.microservices.saga.choreography.supervisor.dto.measure.SagaMetrics;
@@ -25,7 +26,11 @@ public class MeasureService {
     private final SagaStepInstanceRepository stepInstanceRepository;
     private final StatisticService statisticService;
 
+    @Log
+    private int log;
+
     public List<StepMetrics> getAllStepMetrics() {
+        System.out.println("!@! " + log);
         return StreamSupport.stream(stepInstanceRepository.findAll().spliterator(), false)
                 .map(this::mapStepToMetric)
                 .collect(toList());
