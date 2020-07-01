@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.components;
 
+import com.microservices.saga.choreography.supervisor.logging.Events;
 import io.micrometer.core.instrument.Metrics;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Summary;
@@ -19,6 +20,7 @@ public class SagaMetrics {
     private static final String STEP_NAME_LABEL = "step_name";
     private static final String EXCEPTIONS_NAME_LABEL = "exception";
     private static final String KAFKA_TOPIC_NAME_LABEL = "topic";
+    private static final String EVENTS_TYPE_LABEL = "type";
 
     private static final String SAGA_TEMPLATE_STEP_EXECUTED_TITLE = "saga_template_step_executed";
     private static final Summary prometheusSagaTemplateStepExecutedSummary = Summary.build()
@@ -83,6 +85,13 @@ public class SagaMetrics {
             .labelNames(KAFKA_TOPIC_NAME_LABEL)
             .register();
 
+    private static final String EVENTS = "events_total";
+    private static final Counter prometheusEventsCounter = Counter.build()
+            .name(EVENTS)
+            .help("Amount of occurred events")
+            .labelNames(EVENTS_TYPE_LABEL)
+            .register();
+
 
     public void recordSagaInstanceStep(String sagaName, String stepName, double timeExecution) {
         Metrics.summary(SAGA_TEMPLATE_STEP_EXECUTED_TITLE,
@@ -131,5 +140,10 @@ public class SagaMetrics {
     public void countCoordinatorKafkaMessagesCompensationProduced(String topicName) {
         Metrics.counter(COORDINATOR_KAFKA_MESSAGES_COMPENSATED_PRODUCED, KAFKA_TOPIC_NAME_LABEL, topicName).increment();
         prometheusCoordinatorKafkaMessagesCompensationProduced.labels(topicName).inc();
+    }
+
+    public void countEvent(Events event) {
+        Metrics.counter(EVENTS, EVENTS_TYPE_LABEL, event.name()).increment();
+        prometheusEventsCounter.labels(event.name()).inc();
     }
 }
