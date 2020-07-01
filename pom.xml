@@ -21,7 +21,6 @@
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
         <kafka-clients.version>2.5.0</kafka-clients.version>
-        <spring-boot-starter-actuator.version>2.3.1.RELEASE</spring-boot-starter-actuator.version>
         <micrometer.version>1.5.2</micrometer.version>
         <simpleclient.version>0.8.1</simpleclient.version>
     </properties>
@@ -86,7 +85,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>${spring-boot-starter-actuator.version}</version>
         </dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
