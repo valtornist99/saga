@@ -1,16 +1,13 @@
 package com.microservices.saga.choreography.supervisor;
 
 import com.microservices.saga.choreography.supervisor.components.SagaMetrics;
-import org.slf4j.LoggerFactory;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
 
-public class Logger {
-    private org.slf4j.Logger log;
+@AllArgsConstructor
+public class KPIEventsLogger {
+    private Logger log;
     private SagaMetrics metrics;
-
-    public Logger(Class callingClass) {
-        log = LoggerFactory.getLogger(callingClass);
-        metrics = new SagaMetrics();
-    }
 
     public void trace(String message) {
         log.trace(message);
