@@ -1,11 +1,14 @@
 package com.microservices.saga.choreography.supervisor.service.compensation;
 
+import com.microservices.saga.choreography.supervisor.components.SagaMetrics;
 import com.microservices.saga.choreography.supervisor.domain.Message;
+import com.microservices.saga.choreography.supervisor.domain.StepStatus;
 import com.microservices.saga.choreography.supervisor.service.GraphService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Headers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -28,6 +31,9 @@ public class CompensationService {
      */
     private final GraphService graphService;
 
+    @Autowired
+    private SagaMetrics sagaMetrics;
+
     /**
      * Compensation map
      */
@@ -46,12 +52,12 @@ public class CompensationService {
     /**
      * Starts compensation
      */
-    public synchronized void compensate(Long sagaId) {
+    public synchronized void startCompensation(Long sagaId) {
         log.info("Request for compensation. Saga {}", sagaId);
         if (!sagaCompensations.contains(sagaId)) {
             log.info("Start compensation. Saga {}", sagaId);
             sagaCompensations.add(sagaId);
-            startCompensation(sagaId);
+            compensate(sagaId);
         } else {
             log.info("Saga already compensated. Saga {}", sagaId);
         }
@@ -62,15 +68,16 @@ public class CompensationService {
      *
      * @param sagaId id of saga to start compensation
      */
-    private void startCompensation(Long sagaId) {
+    private void compensate(Long sagaId) {
         Queue<Message> messagesQueueToCompensation = graphService.getMessagesQueueToCompensation(sagaId);
         messagesQueueToCompensation.forEach(message -> {
-                    try {
-                        sendMessage(message.getTopic(), message.getHeaders(), message.getEventMessage());
-                    } catch (Exception e) {
-                        log.error("Error while sending compensation message", e);
-                    }
-                });
+            try {
+                sendMessage(message.getTopic(), message.getHeaders(), message.getEventMessage());
+                graphService.updateStepStatus(graphService.getSagaStepInstance(message.getStep(), sagaId), StepStatus.COMPENSATED);
+            } catch (Exception e) {
+                log.error("Error while sending compensation message", e);
+            }
+        });
     }
 
     /**
@@ -81,5 +88,6 @@ public class CompensationService {
         ProducerRecord<String, String> record = new ProducerRecord<>(topicName, message);
         headers.forEach(header -> record.headers().add(header));
         producer.send(record);
+        sagaMetrics.countCoordinatorKafkaMessagesCompensationProduced(topicName);
     }
 }

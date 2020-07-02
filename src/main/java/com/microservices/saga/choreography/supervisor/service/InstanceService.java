@@ -1,5 +1,6 @@
 package com.microservices.saga.choreography.supervisor.service;
 
+import com.microservices.saga.choreography.supervisor.components.SagaHelper;
 import com.microservices.saga.choreography.supervisor.domain.Event;
 import com.microservices.saga.choreography.supervisor.domain.StepStatus;
 import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepDefinition;
@@ -9,7 +10,9 @@ import com.microservices.saga.choreography.supervisor.domain.entity.SagaStepInst
 import com.microservices.saga.choreography.supervisor.repository.SagaStepDefinitionTransitionEventRepository;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepInstanceRepository;
 import com.microservices.saga.choreography.supervisor.repository.SagaStepInstanceTransitionRepository;
+import com.microservices.saga.choreography.supervisor.components.SagaMetrics;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -25,6 +28,12 @@ public class InstanceService {
     final SagaStepInstanceRepository sagaStepInstanceRepository;
     private final SagaStepInstanceTransitionRepository eventInstanceRepository;
 
+    @Autowired
+    private SagaHelper sagaHelper;
+
+    @Autowired
+    private SagaMetrics sagaMetrics;
+
     /**
      * Handling new event
      *
@@ -38,8 +47,26 @@ public class InstanceService {
         SagaStepDefinitionTransitionEvent eventDefinition = getEventDefinition(event);
 
         SagaStepDefinition stepDefinition = eventDefinition.getPreviousStep();
+
+        var stepName = stepDefinition.getStepName();
+        var sagaName = stepDefinition.getSagaName();
+
+        if (sagaHelper.isFirstStepOfSagaInstance(sagaName, stepName)) {
+            sagaMetrics.countSagaInstanceStarted(sagaName);
+        }
+//        Doesn't work because process can't identify the end of saga
+//        if (sagaHelper.isLastStepOfSagaInstance(sagaName, stepName)) {
+//            MetricUtils.incrementSagaInstanceCompleted(sagaName);
+//        }
+
         Long sagaStartTime = eventDefinition.getCreationTime();
         SagaStepInstance occurredStep = getOccurredSagaStepInstanceWithSuccessfulStatus(event, stepDefinition, sagaStartTime);
+
+        // First step has incorrect value
+        // due incorrect saved values of the start timestamp
+        var executionTime = occurredStep.getEndTime() - occurredStep.getStartTime();
+        sagaMetrics.recordSagaInstanceStep(sagaName, occurredStep.getStepName(), executionTime);
+
 
         if (eventDefinition.getNextStep() != null) {
             SagaStepInstance nextStep = SagaStepInstance.builder()
@@ -78,6 +105,16 @@ public class InstanceService {
                 .getSagaName();
     }
 
+    public void updateStepStatus(SagaStepInstance stepInstance, StepStatus status) {
+        stepInstance.setStepStatus(status.name());
+    }
+
+    public SagaStepInstance getSagaStepInstance(Long sagaId, String stepName) {
+        return sagaStepInstanceRepository.findSagaStepInstanceBySagaInstanceIdAndStepName(sagaId, stepName)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Can't find step with name %s and sagaId %d",
+                        stepName, sagaId)));
+    }
+
     private SagaStepInstance getOccurredSagaStepInstanceWithSuccessfulStatus(Event event, SagaStepDefinition occurredStepDefinition,
                                                                              Long sagaStartTime) {
         List<SagaStepInstance> instances = sagaStepInstanceRepository.findSagaStepInstancesBySagaInstanceId(event.getSagaInstanceId());
@@ -102,10 +139,6 @@ public class InstanceService {
         StepStatus status = isEventSuccessful(event) ? StepStatus.SUCCESSFUL : StepStatus.FAILED;
         updateStepStatus(occurredStep, status);
         return occurredStep;
-    }
-
-    private void updateStepStatus(SagaStepInstance stepInstance, StepStatus status) {
-        stepInstance.setStepStatus(status.name());
     }
 
     private void saveStepsInRepository(SagaStepInstance occurredStep, SagaStepInstance nextStep) {
