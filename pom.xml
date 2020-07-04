@@ -6,7 +6,7 @@
 
     <groupId>com.microservices</groupId>
     <artifactId>choreography-orchestrator</artifactId>
-    <version>0.1.0</version>
+    <version>${current-version}-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -29,6 +29,8 @@
 
         <!-- Нужен для scm -->
         <github>microservices-course-itmo/saga</github>
+
+        <current-version>0.1.0</current-version>
     </properties>
 
     <dependencies>
@@ -217,7 +219,7 @@
                     <execution>
                         <id>version tag</id>
                         <configuration>
-                            <newName>${project.version}</newName>
+                            <newName>${current-version}</newName>
                         </configuration>
                         <phase>deploy</phase>
                         <goals>
