@@ -133,7 +133,7 @@
     <distributionManagement>
         <snapshotRepository>
             <id>snapshots</id>
-            <name>36101b39872d-snapshots</name> <!-- Сгенерировано jfrog -->
+            <name>f85eb0ecebad-snapshots</name> <!-- Сгенерировано jfrog -->
             <url>http://${env.JFROG_ARTIFACTORY_IP}:8081/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>

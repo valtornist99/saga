@@ -4,13 +4,23 @@
   <servers>
     <server>
       <username>admin</username>
-      <password>Atamathon1790</password>
+      <password>{+6Sm85KqIlsHarFKzs9NbkNUJmMvw+WsCihaNMeKHAo=}</password>
       <id>central</id>
     </server>
     <server>
       <username>admin</username>
-      <password>Atamathon1790</password>
+      <password>{+6Sm85KqIlsHarFKzs9NbkNUJmMvw+WsCihaNMeKHAo=}</password>
       <id>snapshots</id>
+    </server>
+    <server>
+      <username>reader</username>
+      <password>readerpass</password>
+      <id>reader-central</id>
+    </server>
+    <server>
+      <username>reader</username>
+      <password>readerpass</password>
+      <id>reader-snapshots</id>
     </server>
   </servers>
   <profiles>
@@ -20,15 +30,29 @@
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
+          <id>reader-central</id>
+          <name>libs-release</name>
+          <url>http://10.11.0.40:8081/artifactory/libs-release</url>
+        </repository>
+        <repository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
           <id>central</id>
           <name>libs-release</name>
-          <url>http://77.234.215.138:8081/artifactory/libs-release</url>
+          <url>http://10.11.0.40:8081/artifactory/libs-release</url>
+        </repository>
+        <repository>
+          <snapshots />
+          <id>reader-snapshots</id>
+          <name>libs-snapshot</name>
+          <url>http://10.11.0.40:8081/artifactory/libs-snapshot</url>
         </repository>
         <repository>
           <snapshots />
           <id>snapshots</id>
           <name>libs-snapshot</name>
-          <url>http://77.234.215.138:8081/artifactory/libs-snapshot</url>
+          <url>http://10.11.0.40:8081/artifactory/libs-snapshot</url>
         </repository>
       </repositories>
       <pluginRepositories>
@@ -36,15 +60,29 @@
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
+          <id>reader-central</id>
+          <name>libs-release</name>
+          <url>http://10.11.0.40:8081/artifactory/libs-release</url>
+        </pluginRepository>
+        <pluginRepository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
           <id>central</id>
           <name>libs-release</name>
-          <url>http://77.234.215.138:8081/artifactory/libs-release</url>
+          <url>http://10.11.0.40:8081/artifactory/libs-release</url>
+        </pluginRepository>
+        <pluginRepository>
+          <snapshots />
+          <id>reader-snapshots</id>
+          <name>libs-snapshot</name>
+          <url>http://10.11.0.40:8081/artifactory/libs-snapshot</url>
         </pluginRepository>
         <pluginRepository>
           <snapshots />
           <id>snapshots</id>
           <name>libs-snapshot</name>
-          <url>http://77.234.215.138:8081/artifactory/libs-snapshot</url>
+          <url>http://10.11.0.40:8081/artifactory/libs-snapshot</url>
         </pluginRepository>
       </pluginRepositories>
       <id>artifactory</id>
